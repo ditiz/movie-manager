@@ -6,9 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Movie;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\HttpFoundation\Request;
 
 class MovieController extends AbstractController
 {
@@ -30,11 +28,12 @@ class MovieController extends AbstractController
 
         return $this->json($movies);
     }
+    
 
-    public function getFilmByImdbID()
+    private function getMovieByImdbID()
     {
 
-        $data_movie = $this->getFilm("tt0090605");
+        $data_movie = $this->getMovie("tt0090605");
 
         $movie = new Movie();
 
@@ -70,7 +69,7 @@ class MovieController extends AbstractController
         return new Response('Saved new product with id ' . $movie->getId());
     }
 
-    function getFilm($imdb_id)
+    private function getMovie($imdb_id)
     {
         $params = [
             'apikey' => '92ff3a7a',
@@ -99,7 +98,42 @@ class MovieController extends AbstractController
         return json_decode($result, true);
     }
 
-    function searchFilm() {
+    public function getSearchPage() {
+        return $this->render('movie/search.html.twig');
+    }
 
+    public function useSearchPage(Request $request) {
+
+        $search = $request->get('search');
+        return new Response('search: ' . $search);
+    }
+
+    private function searchMovie($search) 
+    {
+        $params = [
+            'apikey' => '92ff3a7a',
+            's' => $search
+        ];
+
+        $params = '?' . http_build_query($params);
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => 'http://www.omdbapi.com/' . $params
+        ));
+
+        $result = curl_exec($curl);
+
+        curl_close($curl);
+
+        
+        $encoders = [new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+
+        $serializer = new Serializer($normalizers, $encoders);
+
+        return json_decode($result, true);
     }
 }

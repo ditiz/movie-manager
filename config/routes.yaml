@@ -6,6 +6,16 @@ apiListMovie:
     path: /api/movies/
     controller: App\Controller\MovieController::apiListMovies
 
+displaySearchMovie:
+    path: /search/movies
+    controller: App\Controller\MovieController::getSearchPage
+    methods: [GET]
+
+searchMovie:
+    path: /search/movies
+    controller: App\Controller\MovieController::useSearchPage
+    methods: [POST]
+
 getFilmByImdbID:
     path: /api/getFilmByImdbID
     controller: App\Controller\MovieController::getFilmByImdbID
