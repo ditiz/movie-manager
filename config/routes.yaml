@@ -1,6 +1,10 @@
-index:
+listMovie:
     path: /list/movies/
-    controller: App\Controller\MovieController::index
+    controller: App\Controller\MovieController::listMovies
+
+apiListMovie:
+    path: /api/movies/
+    controller: App\Controller\MovieController::apiListMovies
 
 getFilmByImdbID:
     path: /api/getFilmByImdbID

@@ -13,13 +13,22 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class MovieController extends AbstractController
 {
 
-    public function index()
+    public function listMovies()
     {
         $movies = $this->getDoctrine()
             ->getRepository(Movie::class)
             ->findAll();
 
         return $this->render('movie/index.html.twig', ['movies' => $movies]);
+    }
+
+    public function apiListMovies()
+    {
+        $movies = $this->getDoctrine()
+            ->getRepository(Movie::class)
+            ->findAll();
+
+        return $this->json($movies);
     }
 
     public function getFilmByImdbID()
