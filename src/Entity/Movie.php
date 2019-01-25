@@ -121,6 +121,11 @@ class Movie
      */
     private $production;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $runtime;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -374,6 +379,18 @@ class Movie
     public function setProduction(string $production): self
     {
         $this->production = $production;
+
+        return $this;
+    }
+
+    public function getRuntime(): ?string
+    {
+        return $this->runtime;
+    }
+
+    public function setRuntime(string $runtime): self
+    {
+        $this->runtime = $runtime;
 
         return $this;
     }
