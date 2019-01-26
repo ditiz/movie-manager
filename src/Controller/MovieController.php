@@ -29,19 +29,38 @@ class MovieController extends AbstractController
         return $this->json($movies);
     }
 
-    public function getSearchPage() {
+    public function getSearchPage() 
+    {
         return $this->render('movie/search.html.twig', ['search' => '']);
     }
 
+    public function updateMovieToSeeFromSearch(Request $request) 
+    {
+        return new Response('pouet');
+    }
+
+
     public function useSearchPage(Request $request) {
         $search = $request->get('search');
+        $page = $request->get('page');
 
-        $results = $this->searchMovie($search);
+        $page = isset($page) ? $page : 1;
 
-        return $this->render('movie/search.html.twig',[
-            'results' => $results['Search'],
-            'search' => $search
-        ]);
+        $results = $this->searchMovie($search, $page);
+
+        if ($results['Response'] == 'False') {
+            return $this->render('movie/search.html.twig',[
+                'error' => $results['Error'],
+                'search' => $search
+            ]);
+        } else {
+            return $this->render('movie/search.html.twig',[
+                'results' => $results['Search'],
+                'search' => $search,
+                'page' => $page
+            ]);
+        }
+
     }
     
     private function getMovieByImdbID()
@@ -106,11 +125,12 @@ class MovieController extends AbstractController
         return json_decode($result, true);
     }
 
-    private function searchMovie($search) 
+    private function searchMovie(string $search, int $page = 1) : array
     {
         $params = [
             'apikey' => '92ff3a7a',
-            's' => $search
+            's' => $search,
+            'page' => $page,
         ];
 
         $params = '?' . http_build_query($params);

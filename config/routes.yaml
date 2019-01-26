@@ -1,5 +1,5 @@
 listMovie:
-    path: /list/movies/
+    path: /movies/list/
     controller: App\Controller\MovieController::listMovies
 
 apiListMovie:
@@ -7,13 +7,18 @@ apiListMovie:
     controller: App\Controller\MovieController::apiListMovies
 
 displaySearchMovie:
-    path: /search/movies
+    path: /movies/search/
     controller: App\Controller\MovieController::getSearchPage
     methods: [GET]
 
 searchMovie:
-    path: /search/movies
+    path: /movies/search/
     controller: App\Controller\MovieController::useSearchPage
+    methods: [POST]
+
+updateTooSeeAndSeeMovieInfo:
+    path: /movie/update/search
+    controller: App\Controller\MovieController::updateMovieToSeeFromSearch
     methods: [POST]
 
 getFilmByImdbID:

@@ -12,7 +12,8 @@
             <h1>Chercher un film</h1>
 
             <form method="post" accept-charset="UTF-8">
-                <input type="hidden" name="action" value="/search/movies">
+                <input type="hidden" name="action" value="{{ path('searchMovie') }}">
+                <input type="hidden" name='page' value='1'>
             
                 <h3><label for="search">Nom du Film</label></h3>
                 <input id="search" type="text" name="search" value="{{ search }}"/>
@@ -24,38 +25,74 @@
         {% if results is defined %}
             {{ dump(results) }}
 
-            <table>
-                <thead>
-                    <th>Poster</th>
-                    <th>Titre</th>
-                    <th>Film/Série</th>
-                    <th>Film à voir</th>
-                    <th>Film vu</th>
-                </thead>
-                <tbody>
-                    {% for result in results %}
-                        <tr>
-                            <td>
-                                <img src="{{ result.Poster }}" alt="poster" class='poster'>
-                            </td>
-                            <td>{{ result.Title }} <br> {{ result.Year }} </td>
-                            <td>{{ result.Type }}</td>
-                            <td>
-                                <label class="container">Three
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
-                            <td>
-                                <label class="container">Three
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <form method="post" accept-charset="UTF-8">
+                <input 
+                    type="hidden" 
+                    name="action" 
+                    value="{{ path('updateTooSeeAndSeeMovieInfo') }}"
+                >
+
+                <table>
+                    <thead>
+                        <th>Poster</th>
+                        <th>Titre</th>
+                        <th>Film/Série</th>
+                        <th>Film à voir</th>
+                        <th>Film vu</th>
+                    </thead>
+                    <tbody>
+                        {% for key, result in results %}
+                            <tr>
+                                <td>
+                                    <img src="{{ result.Poster }}" alt="poster" class='poster'>
+                                </td>
+                                <td>{{ result.Title }} <br> {{ result.Year }} </td>
+                                <td>{{ result.Type }}</td>
+                                <td>
+                                    <label class="container">
+                                        <input type="checkbox" name='movies[{{ result.imdbID }}][too_see]'>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="container">
+                                        <input type="checkbox" name='movies[{{ result.imdbID }}][see]'>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+               <div class='bottom'>
+                    <form method="post" accept-charset="UTF-8">
+                            <input type="hidden" name="action" value="{{ path('searchMovie') }}">
+                            <input id="search" type="hidden" name="search" value="{{ search }}"/>
+                            <input type="hidden" name='page' value='{{ page - 1 }}'>
+                        
+                            <input type="submit" value="Page précédante"/>
+                    </form>
+
+                    <input type="submit" value="Enregister">
+
+                    <form method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="action" value="{{ path('searchMovie') }}">
+                        <input id="search" type="hidden" name="search" value="{{ search }}"/>
+                        <input type="hidden" name='page' value='{{ page + 1 }}'>
+                    
+                        <input type="submit" value="Page suivante"/>
+                    </form>
+               </div>
+            </form>
+        {% endif %}
+
+        {% if error is defined %}
+            <div class='error'>
+                <span>
+                    {{ error }}
+                </span>
+            </div>
         {% endif %}
         </div>
     </div>

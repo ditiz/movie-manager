@@ -6,10 +6,24 @@ body {
 button, input[type="submit"], input[type="button"] {
     background: #2ECC40;
     color: white;
-    padding: 5px;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
     border: none;
+    border: 1px solid transparent;
+    transition: color .15s ease-in-out,
+        background-color .15s ease-in-out,
+        border-color .15s ease-in-out,
+        box-shadow .15s ease-in-out;
+    cursor: pointer;
+}
+
+button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+
 }
 
 input {
-    padding: 5px;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
 }
