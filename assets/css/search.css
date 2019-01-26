@@ -1,0 +1,24 @@
+.search {
+    color: white;
+}
+
+.search .wrapper {
+    margin: 1em auto; 
+    max-width: 800px; 
+    width: 95%; 
+    font: 18px/1.5 sans-serif;  
+}
+
+.search .poster {
+    height: 150px;
+}
+
+.search table {
+    width: 100%;
+}
+
+.search td {
+    border : 1px solid grey;
+    text-align: center;
+    padding: 5px;
+} 

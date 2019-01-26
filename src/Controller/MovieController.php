@@ -28,8 +28,22 @@ class MovieController extends AbstractController
 
         return $this->json($movies);
     }
-    
 
+    public function getSearchPage() {
+        return $this->render('movie/search.html.twig', ['search' => '']);
+    }
+
+    public function useSearchPage(Request $request) {
+        $search = $request->get('search');
+
+        $results = $this->searchMovie($search);
+
+        return $this->render('movie/search.html.twig',[
+            'results' => $results['Search'],
+            'search' => $search
+        ]);
+    }
+    
     private function getMovieByImdbID()
     {
 
@@ -89,23 +103,7 @@ class MovieController extends AbstractController
 
         curl_close($curl);
 
-        
-        $encoders = [new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-
-        $serializer = new Serializer($normalizers, $encoders);
-
         return json_decode($result, true);
-    }
-
-    public function getSearchPage() {
-        return $this->render('movie/search.html.twig');
-    }
-
-    public function useSearchPage(Request $request) {
-
-        $search = $request->get('search');
-        return new Response('search: ' . $search);
     }
 
     private function searchMovie($search) 
@@ -127,12 +125,6 @@ class MovieController extends AbstractController
         $result = curl_exec($curl);
 
         curl_close($curl);
-
-        
-        $encoders = [new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-
-        $serializer = new Serializer($normalizers, $encoders);
 
         return json_decode($result, true);
     }
