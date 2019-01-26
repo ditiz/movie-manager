@@ -36,6 +36,8 @@ class MovieController extends AbstractController
 
     public function updateMovieToSeeFromSearch(Request $request) 
     {
+        $movies = $request->get('movies');
+        dump($movies); die;
         return new Response('pouet');
     }
 
@@ -65,7 +67,6 @@ class MovieController extends AbstractController
     
     private function getMovieByImdbID()
     {
-
         $data_movie = $this->getMovie("tt0090605");
 
         $movie = new Movie();
@@ -125,7 +126,7 @@ class MovieController extends AbstractController
         return json_decode($result, true);
     }
 
-    private function searchMovie(string $search, int $page = 1) : array
+    private function searchMovie($search, int $page = 1) : array
     {
         $params = [
             'apikey' => '92ff3a7a',

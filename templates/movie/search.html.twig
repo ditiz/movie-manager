@@ -11,8 +11,7 @@
         <div class="wrapper">
             <h1>Chercher un film</h1>
 
-            <form method="post" accept-charset="UTF-8">
-                <input type="hidden" name="action" value="{{ path('searchMovie') }}">
+            <form method="post" action='{{ path("searchMovie") }}'>
                 <input type="hidden" name='page' value='1'>
             
                 <h3><label for="search">Nom du Film</label></h3>
@@ -25,13 +24,7 @@
         {% if results is defined %}
             {{ dump(results) }}
 
-            <form method="post" accept-charset="UTF-8">
-                <input 
-                    type="hidden" 
-                    name="action" 
-                    value="{{ path('updateTooSeeAndSeeMovieInfo') }}"
-                >
-
+            <form method="post" name="action" action="{{ path('updateTooSeeAndSeeMovieInfo') }}"> 
                 <table>
                     <thead>
                         <th>Poster</th>
@@ -66,25 +59,26 @@
                 </table>
 
                <div class='bottom'>
-                    <form method="post" accept-charset="UTF-8">
-                            <input type="hidden" name="action" value="{{ path('searchMovie') }}">
-                            <input id="search" type="hidden" name="search" value="{{ search }}"/>
-                            <input type="hidden" name='page' value='{{ page - 1 }}'>
-                        
-                            <input type="submit" value="Page précédante"/>
-                    </form>
+                    <input type="submit" value="Enregister">   
+               </div>
+            </form>
 
-                    <input type="submit" value="Enregister">
-
-                    <form method="post" accept-charset="UTF-8">
+            <div class='bottom'>
+                <form method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="action" value="{{ path('searchMovie') }}">
+                        <input id="search" type="hidden" name="search" value="{{ search }}"/>
+                        <input type="hidden" name='page' value='{{ page - 1 }}'>
+                    
+                        <input type="submit" value="Page précédante"/>
+                </form>
+                <form method="post" accept-charset="UTF-8">
                         <input type="hidden" name="action" value="{{ path('searchMovie') }}">
                         <input id="search" type="hidden" name="search" value="{{ search }}"/>
                         <input type="hidden" name='page' value='{{ page + 1 }}'>
                     
                         <input type="submit" value="Page suivante"/>
-                    </form>
-               </div>
-            </form>
+                </form>
+            </div>
         {% endif %}
 
         {% if error is defined %}

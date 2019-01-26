@@ -17,9 +17,10 @@ searchMovie:
     methods: [POST]
 
 updateTooSeeAndSeeMovieInfo:
-    path: /movie/update/search
+    path: /movies/search/update
     controller: App\Controller\MovieController::updateMovieToSeeFromSearch
     methods: [POST]
+
 
 getFilmByImdbID:
     path: /api/getFilmByImdbID
