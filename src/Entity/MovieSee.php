@@ -38,12 +38,12 @@ class MovieSee
 
     public function getImdbId(): ?int
     {
-        return $this->imdb_id;
+        return $this->imdbID;
     }
 
-    public function setImdbId(int $imdb_id): self
+    public function setImdbId(string $imdbID): self
     {
-        $this->imdb_id = $imdb_id;
+        $this->imdbID = $imdbID;
 
         return $this;
     }

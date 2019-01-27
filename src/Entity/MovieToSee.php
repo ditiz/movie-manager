@@ -26,6 +26,11 @@ class MovieToSee
      */
     private $too_see;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $movie_id;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +56,18 @@ class MovieToSee
     public function setTooSee(bool $too_see): self
     {
         $this->too_see = $too_see;
+
+        return $this;
+    }
+
+    public function getMovieId(): ?int
+    {
+        return $this->movie_id;
+    }
+
+    public function setMovieId(int $movie_id): self
+    {
+        $this->movie_id = $movie_id;
 
         return $this;
     }

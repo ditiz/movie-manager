@@ -107,7 +107,7 @@ class Movie
     private $imdbID;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="string", length=64)
      */
     private $DVD;
 
@@ -347,12 +347,12 @@ class Movie
         return $this;
     }
 
-    public function getDVD(): ?\DateTimeInterface
+    public function getDVD(): string
     {
         return $this->DVD;
     }
 
-    public function setDVD(\DateTimeInterface $DVD): self
+    public function setDVD(string $DVD): self
     {
         $this->DVD = $DVD;
 

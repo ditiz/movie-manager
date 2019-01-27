@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Movie;
+use App\Entity\MovieSee;
+use App\Entity\MovieToSee;
 use Symfony\Component\HttpFoundation\Request;
 
 class MovieController extends AbstractController
@@ -37,7 +39,53 @@ class MovieController extends AbstractController
     public function updateMovieToSeeFromSearch(Request $request) 
     {
         $movies = $request->get('movies');
-        dump($movies); die;
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        foreach ($movies as $imdbID => $movie) {
+            if (isset($movie['to_see'])) {
+                $MovieToSee = $this->getDoctrine()
+                    ->getRepository(MovieToSee::class)
+                    ->findOneBy(['imdbID' => $imdbID]);
+                    
+                if (!isset($MovieToSee)) {
+                    $MovieToSee = new MovieToSee();
+
+                    $MovieToSee->setImdbId($imdbID);
+                    
+                    $toSee = $movie['to_see'] == 'on' ? 1 : 0;
+                    $MovieToSee->setTooSee($toSee);
+                    
+                    $movieFromDatabase = $this->getMovieFromDatabase($imdbID);
+                    $MovieToSee->setMovieId($movieFromDatabase->getId());
+
+                    $entityManager->persist($MovieToSee);
+                }
+            }
+
+            if (isset($movie['see'])) {
+
+                $MovieSee = $this->getDoctrine()
+                    ->getRepository(MovieSee::class)
+                    ->findOneBy(['imdbID' => $imdbID]);
+
+                if (!isset($MovieSee)) {
+                    $MovieSee = new MovieSee();
+
+                    $MovieSee->setImdbId($imdbID);
+                    
+                    $see = $movie['see'] == 'on' ? 1 : 0;
+                    $MovieSee->setSee($see);
+                    
+                    $movieFromDatabase = $this->getMovieFromDatabase($imdbID);
+                    $MovieSee->setMovieId($movieFromDatabase->getId());
+
+                    $entityManager->persist($MovieSee);
+                }
+            }
+        }
+        $entityManager->flush();
+
         return new Response('pouet');
     }
 
@@ -64,10 +112,23 @@ class MovieController extends AbstractController
         }
 
     }
-    
-    private function getMovieByImdbID()
+
+    private function getMovieFromDatabase(string $imdbID)
     {
-        $data_movie = $this->getMovie("tt0090605");
+        $movie = $this->getDoctrine()
+            ->getRepository(Movie::class)
+            ->findOneBy(['imdbID' => $imdbID]);
+
+        if (!$movie) {
+            $movie = $this->getMovieByImdbID($imdbID);
+        }
+
+        return $movie;
+    }
+    
+    private function getMovieByImdbID($imdbID)
+    {
+        $data_movie = $this->getMovie($imdbID);
 
         $movie = new Movie();
 
@@ -85,22 +146,22 @@ class MovieController extends AbstractController
         $movie->setCountry($data_movie['Country']);
         $movie->setAwards($data_movie['Awards']);
         $movie->setRating($data_movie['Ratings']);
-        $movie->setMetascore($data_movie['Metascore']);
-        $movie->setImdbRating($data_movie['imdbRating']);
+        $movie->setMetascore(intval($data_movie['Metascore']));
+        $movie->setImdbRating(floatval($data_movie['imdbRating']));
         $movie->setImdbVotes(floatval($data_movie['imdbVotes']));
         $movie->setImdbID($data_movie['imdbID']);
         $movie->setPoster($data_movie['Poster']);
         $movie->setBoxoffice($data_movie['BoxOffice']);
         $movie->setProduction($data_movie['Production']);
 
-        $date = new \DateTime('@'.strtotime($data_movie['DVD']));
+        $date = date('Y-m-d H:i:s', (strtotime($data_movie['DVD'])));
         $movie->setDVD($date);
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($movie);
         $entityManager->flush();
 
-        return new Response('Saved new product with id ' . $movie->getId());
+        return $movie;
     }
 
     private function getMovie($imdb_id)
