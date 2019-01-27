@@ -31,13 +31,39 @@ class MovieController extends AbstractController
         return $this->json($movies);
     }
 
-    public function getSearchPage() 
+    public function getSearchPage($messages = []) 
     {
-        return $this->render('movie/search.html.twig', ['search' => '']);
+        return $this->render('movie/search.html.twig', [
+            'search' => '',
+            'messages' => $messages
+        ]);
+    }
+
+    public function useSearchPage(Request $request) {
+        $search = $request->get('search');
+        $page = $request->get('page');
+
+        $page = isset($page) ? $page : 1;
+
+        $results = $this->searchMovie($search, $page);
+
+        if ($results['Response'] == 'False') {
+            return $this->render('movie/search.html.twig',[
+                'error' => $results['Error'],
+                'search' => $search
+            ]);
+        } else {
+            return $this->render('movie/search.html.twig',[
+                'results' => $results['Search'],
+                'search' => $search,
+                'page' => $page
+            ]);
+        }
     }
 
     public function updateMovieToSeeFromSearch(Request $request) 
     {
+        $modif = [];
         $movies = $request->get('movies');
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -60,6 +86,10 @@ class MovieController extends AbstractController
                     $MovieToSee->setMovieId($movieFromDatabase->getId());
 
                     $entityManager->persist($MovieToSee);
+
+                    $modif[$MovieSee->getImdbID()] = 'ajouter à film à voir';
+                } else {
+                    $modif[$MovieToSee->getImdbID()] = 'déjà dans ce status pour film à voir';
                 }
             }
 
@@ -81,36 +111,21 @@ class MovieController extends AbstractController
                     $MovieSee->setMovieId($movieFromDatabase->getId());
 
                     $entityManager->persist($MovieSee);
+
+                    $modif[$MovieSee->getImdbID()] = 'ajouter à film à voir';
+                } else {
+                    $modif[$MovieSee->getImdbID()] = 'déjà dans ce status pour film vu';
                 }
             }
         }
         $entityManager->flush();
 
-        return new Response('pouet');
-    }
 
+        $response = $this->forward('App\Controller\MovieController::getSearchPage', [
+            'messages' => $modif
+        ]);
 
-    public function useSearchPage(Request $request) {
-        $search = $request->get('search');
-        $page = $request->get('page');
-
-        $page = isset($page) ? $page : 1;
-
-        $results = $this->searchMovie($search, $page);
-
-        if ($results['Response'] == 'False') {
-            return $this->render('movie/search.html.twig',[
-                'error' => $results['Error'],
-                'search' => $search
-            ]);
-        } else {
-            return $this->render('movie/search.html.twig',[
-                'results' => $results['Search'],
-                'search' => $search,
-                'page' => $page
-            ]);
-        }
-
+        return $response;
     }
 
     private function getMovieFromDatabase(string $imdbID)
