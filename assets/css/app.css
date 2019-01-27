@@ -19,8 +19,8 @@ button, input[type="submit"], input[type="button"] {
 }
 
 button:hover, input[type="submit"]:hover, input[type="button"]:hover {
-
-}
+    background: #1f892b;
+} 
 
 input {
     padding: .375rem .75rem;

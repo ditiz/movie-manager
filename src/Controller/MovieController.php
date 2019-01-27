@@ -53,10 +53,15 @@ class MovieController extends AbstractController
                 'search' => $search
             ]);
         } else {
+            $results = $results['Search'];
+
+            $watch_infos = $this->getWatchInfo($results);
+
             return $this->render('movie/search.html.twig',[
-                'results' => $results['Search'],
+                'results' => $results,
                 'search' => $search,
-                'page' => $page
+                'page' => $page,
+                'watch_infos' => $watch_infos
             ]);
         }
     }
@@ -87,9 +92,9 @@ class MovieController extends AbstractController
 
                     $entityManager->persist($MovieToSee);
 
-                    $modif[$MovieSee->getImdbID()] = 'ajouter à film à voir';
+                    $modif[$movieFromDatabase->getName()] = 'ajouter à film à voir';
                 } else {
-                    $modif[$MovieToSee->getImdbID()] = 'déjà dans ce status pour film à voir';
+                    $modif[$movieFromDatabase->getName()] = 'déjà dans ce status pour film à voir';
                 }
             }
 
@@ -112,9 +117,10 @@ class MovieController extends AbstractController
 
                     $entityManager->persist($MovieSee);
 
-                    $modif[$MovieSee->getImdbID()] = 'ajouter à film à voir';
+                    $modif[$movieFromDatabase->getName()] = 'ajouter à film à voir';
                 } else {
-                    $modif[$MovieSee->getImdbID()] = 'déjà dans ce status pour film vu';
+                    $movieFromDatabase = $this->getMovieFromDatabase($imdbID);
+                    $modif[$movieFromDatabase->getName()] = 'déjà dans ce status pour film vu';
                 }
             }
         }
@@ -126,6 +132,25 @@ class MovieController extends AbstractController
         ]);
 
         return $response;
+    }
+
+    private function getWatchInfo($movies) {
+        $watch_infos = [];
+        foreach ($movies as $movie) {
+            $watch_infos['toSee'][$movie['imdbID']] = $this->getDoctrine()
+                ->getRepository(MovieToSee::class)
+                ->findOneBy(['imdbID' => $movie['imdbID'], 'too_see' => 1]);
+
+            $watch_infos['see'][$movie['imdbID']] = $this->getDoctrine()
+                ->getRepository(MovieSee::class)
+                ->findOneBy(['imdbID' => $movie['imdbID'], 'see' => 1]);
+        }
+
+        if ($watch_infos == []) {
+            return false;
+        }
+
+        return $watch_infos;
     }
 
     private function getMovieFromDatabase(string $imdbID)
@@ -148,7 +173,7 @@ class MovieController extends AbstractController
         $movie = new Movie();
 
         $movie->setName($data_movie['Title']);
-        $movie->setYear($data_movie['Year']);
+        $movie->setYear(intval($data_movie['Year']));
         $movie->setRated($data_movie['Rated']);
         $movie->setReleased($data_movie['Released']);
         $movie->setRuntime($data_movie['Runtime']);
@@ -166,11 +191,19 @@ class MovieController extends AbstractController
         $movie->setImdbVotes(floatval($data_movie['imdbVotes']));
         $movie->setImdbID($data_movie['imdbID']);
         $movie->setPoster($data_movie['Poster']);
-        $movie->setBoxoffice($data_movie['BoxOffice']);
-        $movie->setProduction($data_movie['Production']);
 
-        $date = date('Y-m-d H:i:s', (strtotime($data_movie['DVD'])));
-        $movie->setDVD($date);
+        $boxOffice = isset($data_movie['BoxOffice']) ? $data_movie['BoxOffice'] : 'N/A';
+        $movie->setBoxoffice($boxOffice);
+
+        $production = isset($data_movie['Production']) ? $data_movie['Production'] : 'N/A';
+        $movie->setProduction($production);
+
+        if(isset($data_movie['DVD'])) {
+            $date_DVD = date('Y-m-d H:i:s', strtotime($data_movie['DVD']));
+        } else {
+            $date_DVD = '00-00-0000 00:00:00';
+        }
+        $movie->setDVD($date_DVD);
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($movie);
@@ -206,7 +239,7 @@ class MovieController extends AbstractController
     {
         $params = [
             'apikey' => '92ff3a7a',
-            's' => $search,
+            's' => trim($search),
             'page' => $page,
         ];
 
@@ -225,4 +258,11 @@ class MovieController extends AbstractController
 
         return json_decode($result, true);
     }
+}
+
+function dd(...$params) {
+    foreach($params as $param) {
+        dump($param);
+    }
+    die;
 }

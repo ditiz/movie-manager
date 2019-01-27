@@ -10,9 +10,11 @@
     <div class='search'>
         <div class="wrapper">        
             {% if messages is defined %}
-                {% for imdbID, message in messages %}
-                    <span>{{ imdbID }} {{ message }}</span>
-                {% endfor %}
+                <div class='messages'>
+                    {% for imdbID, message in messages %}
+                        <p>{{ imdbID }} {{ message }}</p>
+                    {% endfor %}
+                </div>
             {% endif %}
 
             <h1>Chercher un film</h1>
@@ -28,7 +30,7 @@
         
 
             {% if results is defined %}
-                {{ dump(results) }}
+                {{ dump(watch_infos) }}
 
                 <form method="post" name="action" action="{{ path('updateTooSeeAndSeeMovieInfo') }}"> 
                     <table>
@@ -41,6 +43,20 @@
                         </thead>
                         <tbody>
                             {% for key, result in results %}
+                                {{ dump(watch_infos.toSee[result.imdbID] is not null) }}
+
+                                {% if watch_infos.toSee[result.imdbID] is not null %}
+                                    {% set too_see = 'checked' %}
+                                {% else %}
+                                    {% set too_see = '' %}
+                                {% endif %}
+
+                                {% if watch_infos.see[result.imdbID] is not null %}
+                                    {% set see = 'checked' %}
+                                {% else %}
+                                    {% set see = '' %}
+                                {% endif %}
+
                                 <tr>
                                     <td>
                                         <img src="{{ result.Poster }}" alt="poster" class='poster'>
@@ -49,13 +65,21 @@
                                     <td>{{ result.Type }}</td>
                                     <td>
                                         <label class="container">
-                                            <input type="checkbox" name='movies[{{ result.imdbID }}][to_see]'>
+                                            <input 
+                                                type="checkbox" 
+                                                name='movies[{{ result.imdbID }}][to_see]'
+                                                {{ too_see }}
+                                            >
                                             <span class="checkmark"></span>
                                         </label>
                                     </td>
                                     <td>
                                         <label class="container">
-                                            <input type="checkbox" name='movies[{{ result.imdbID }}][see]'>
+                                            <input 
+                                                type="checkbox" 
+                                                name='movies[{{ result.imdbID }}][see]' 
+                                                {{ see }}
+                                            >
                                             <span class="checkmark"></span>
                                         </label>
                                     </td>

@@ -101,3 +101,11 @@
     flex-flow: row wrap;
     margin: 10px 0;
 }
+
+.messages {
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background: #0074D9;
+    padding: .375rem .75rem;
+    text-align: center;
+}

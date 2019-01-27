@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Movie;
+use App\Entity\MovieTosee;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MovieSeeRepository")
@@ -18,11 +20,14 @@ class MovieSee
 
     /**
      * @ORM\Column(type="integer")
+     * @ORM\OneToOne(targetEntity="Movie", mappedBy="id")
      */
     private $movie_id;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @ORM\OneToOne(targetEntity="Movie", mappedBy="imdbID")
+     * @ORM\OneToOne(targetEntity="MovieToSee", mappedBy="imdbID")
      */
     private $imdbID;
 
