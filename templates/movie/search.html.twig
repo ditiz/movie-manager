@@ -37,8 +37,6 @@
                         </thead>
                         <tbody>
                             {% for key, result in results %}
-                                {{ dump(watch_infos.toSee[result.imdbID] is not null) }}
-
                                 {% if watch_infos.toSee[result.imdbID] is not null %}
                                     {% set too_see = 'checked' %}
                                 {% else %}
@@ -57,7 +55,11 @@
                                             <img src="{{ result.Poster }}" alt="poster" class='poster'>
                                         </a>
                                     </td>
-                                    <td>{{ result.Title }} <br> {{ result.Year }} </td>
+                                    <td>
+                                        <a href="{{ path('getMovieDetail', {'imdbID': result.imdbID}) }}">
+                                            {{ result.Title }} <br> {{ result.Year }} 
+                                        </a>
+                                    </td>
                                     <td>{{ result.Type }}</td>
                                     <td>
                                         <label class="container">
