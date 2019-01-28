@@ -1,6 +1,7 @@
 body {
     background-color: #111111;
     font-size: 16px;
+    color: white;
 }
 
 button, input[type="submit"], input[type="button"] {
@@ -26,4 +27,11 @@ input {
     padding: .375rem .75rem;
     font-size: 1rem;
     line-height: 1.5;
+}
+
+.wrapper {
+    margin: 1em auto; 
+    max-width: 800px; 
+    width: 95%; 
+    font: 18px/1.5 sans-serif;  
 }

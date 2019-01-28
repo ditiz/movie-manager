@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MovieController extends AbstractController
 {
-
     public function listMovies()
     {
         $movies = $this->getDoctrine()

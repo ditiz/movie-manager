@@ -2,10 +2,6 @@
 
 {% block title %}Chercher un film{% endblock %}
 
-{% block stylesheets %}
-    <link href="{{ asset('build/app.css') }}" type="text/css" rel="stylesheet"/>
-{% endblock %}
-
 {% block body %}
     <div class='search'>
         <div class="wrapper">        
@@ -30,8 +26,6 @@
         
 
             {% if results is defined %}
-                {{ dump(watch_infos) }}
-
                 <form method="post" name="action" action="{{ path('updateTooSeeAndSeeMovieInfo') }}"> 
                     <table>
                         <thead>
@@ -59,7 +53,9 @@
 
                                 <tr>
                                     <td>
-                                        <img src="{{ result.Poster }}" alt="poster" class='poster'>
+                                        <a href="{{ path('getMovieDetail', {'imdbID': result.imdbID}) }}">
+                                            <img src="{{ result.Poster }}" alt="poster" class='poster'>
+                                        </a>
                                     </td>
                                     <td>{{ result.Title }} <br> {{ result.Year }} </td>
                                     <td>{{ result.Type }}</td>

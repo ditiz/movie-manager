@@ -25,3 +25,7 @@ updateTooSeeAndSeeMovieInfo:
 getFilmByImdbID:
     path: /api/getFilmByImdbID
     controller: App\Controller\MovieController::getFilmByImdbID
+
+getMovieDetail:
+    path: /movies/detail/{imdbID}
+    controller: App\Controller\MovieDetailController::index
