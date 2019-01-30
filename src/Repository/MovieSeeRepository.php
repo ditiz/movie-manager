@@ -41,13 +41,14 @@ class MovieSeeRepository extends ServiceEntityRepository
     */
     public function findAllMovieSeeJoinMovie($see)
     {
-        return $this->getEntityManager()->createQuery(
-            'SELECT ms, m
-            FROM App\Entity\MovieSee ms
-            JOIN App\Entity\Movie m
-            WHERE ms.see = :see
-            ORDER BY m.id'
-        )->setParameter('see', $see)->execute();
+        return $this->createQueryBuilder('ms')
+            ->innerJoin('App\Entity\Movie', 'm')
+            ->andWhere('m.id = ms.movie_id AND ms.see = :see')
+            ->setParameter('see', $see)
+            ->select('m')
+            ->orderBy('m.id', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     /*
