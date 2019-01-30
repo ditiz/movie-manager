@@ -20,14 +20,16 @@ class MovieSee
 
     /**
      * @ORM\Column(type="integer")
-     * @ORM\OneToOne(targetEntity="Movie", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="App\Entity\Movie", mappedBy="id")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $movie_id;
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @ORM\OneToOne(targetEntity="Movie", mappedBy="imdbID")
-     * @ORM\OneToOne(targetEntity="MovieToSee", mappedBy="imdbID")
+     * @ORM\OneToOne(targetEntity="App\Entity\Movie", mappedBy="imdbID")
+     * @ORM\OneToOne(targetEntity="App\Entity\MovieToSee", mappedBy="imdbID")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $imdbID;
 

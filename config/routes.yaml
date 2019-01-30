@@ -29,3 +29,7 @@ getFilmByImdbID:
 getMovieDetail:
     path: /movies/detail/{imdbID}
     controller: App\Controller\MovieDetailController::index
+
+getMovieSeeList:
+    path: /movies/tooSee/
+    controller: App\Controller\MovieSeeController::index

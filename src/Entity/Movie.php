@@ -13,6 +13,7 @@ class Movie
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @ORM\OneToMany(targetEntity="MovieSee", mappedBy="movie_id")
      */
     private $id;
 
@@ -103,6 +104,7 @@ class Movie
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @ORM\OneToMany(targetEntity="MovieSee", mappedBy="imdbID")
      */
     private $imdbID;
 

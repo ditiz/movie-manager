@@ -36,6 +36,20 @@ class MovieSeeRepository extends ServiceEntityRepository
     }
     */
 
+    /**
+    * @return MovieSee[] Returns an array of MovieSee objects
+    */
+    public function findAllMovieSeeJoinMovie($see)
+    {
+        return $this->getEntityManager()->createQuery(
+            'SELECT ms, m
+            FROM App\Entity\MovieSee ms
+            JOIN App\Entity\Movie m
+            WHERE ms.see = :see
+            ORDER BY m.id'
+        )->setParameter('see', $see)->execute();
+    }
+
     /*
     public function findOneBySomeField($value): ?MovieSee
     {
