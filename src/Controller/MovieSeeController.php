@@ -14,10 +14,9 @@ class MovieSeeController extends AbstractController
             ->getRepository(MovieSee::class)
             ->findAllMovieSeeJoinMovie(1);
         
-        dump($movies);die;
 
         return $this->render('movie_see/index.html.twig', [
-            'controller_name' => 'MovieSeeController',
+            'movies' => $movies,
         ]);
     }
 }
