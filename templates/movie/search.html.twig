@@ -5,7 +5,7 @@
 {% block body %}
     <div class='search'>
         <div class="wrapper">        
-            {% if messages is defined %}
+            {% if messages is defined and messages|length > 0 %}
                 <div class='messages'>
                     {% for imdbID, message in messages %}
                         <p>{{ imdbID }} {{ message }}</p>
@@ -109,7 +109,7 @@
                 </div>
             {% endif %}
 
-        {% if error is defined %}
+        {% if error is defined and error|length > 0 %}
             <div class='error'>
                 <span>
                     {{ error }}

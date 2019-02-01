@@ -7,6 +7,13 @@
         <link href="{{ asset('build/app.css') }}" type="text/css" rel="stylesheet"/>
     </head>
     <body>
+        <header>
+            <ul>
+                <li><a href="{{ path('displaySearchMovie') }}">Recherche</a></li>
+                <li><a href="{{ path('getMovieSeeList') }}">Films vu</a></li>
+                <li><a href="">Film à voir</a></li>
+            </ul>
+        </header>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
