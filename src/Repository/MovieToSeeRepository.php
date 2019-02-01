@@ -36,6 +36,21 @@ class MovieToSeeRepository extends ServiceEntityRepository
     }
     */
 
+     /**
+    * @return MovieToSee[] Returns an array of MovieToSee objects
+    */
+    public function findAllMovieToSeeJoinMovie($to_see)
+    {
+        return $this->createQueryBuilder('mts')
+            ->innerJoin('App\Entity\Movie', 'm')
+            ->andWhere('m.id = mts.movie_id AND mts.to_see = :to_see')
+            ->setParameter('to_see', $to_see)
+            ->select('m')
+            ->orderBy('m.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?MovieToSee
     {

@@ -18,16 +18,20 @@ class MovieToSee
 
     /**
      * @ORM\Column(type="string", length=54)
+     * @ORM\OneToOne(targetEntity="App\Entity\Movie", mappedBy="imdbID")
+     * @ORM\OneToOne(targetEntity="App\Entity\MovieSee", mappedBy="imdbID")
      */
     private $imdbID;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $too_see;
+    private $to_see;
 
     /**
      * @ORM\Column(type="integer")
+     * @ORM\OneToOne(targetEntity="App\Entity\Movie", mappedBy="id")
+     * @ORM\OneToOne(targetEntity="App\Entity\MovieSee", mappedBy="movie_id")
      */
     private $movie_id;
 
@@ -50,12 +54,12 @@ class MovieToSee
 
     public function getTooSee(): ?bool
     {
-        return $this->too_see;
+        return $this->to_see;
     }
 
-    public function setTooSee(bool $too_see): self
+    public function setTooSee(bool $to_see): self
     {
-        $this->too_see = $too_see;
+        $this->to_see = $to_see;
 
         return $this;
     }
@@ -68,6 +72,18 @@ class MovieToSee
     public function setMovieId(int $movie_id): self
     {
         $this->movie_id = $movie_id;
+
+        return $this;
+    }
+
+    public function getToSee(): ?bool
+    {
+        return $this->to_see;
+    }
+
+    public function setToSee(bool $to_see): self
+    {
+        $this->to_see = $to_see;
 
         return $this;
     }

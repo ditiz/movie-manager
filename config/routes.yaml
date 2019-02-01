@@ -31,5 +31,9 @@ getMovieDetail:
     controller: App\Controller\MovieDetailController::index
 
 getMovieSeeList:
-    path: /movies/tooSee/
+    path: /movies/see/
     controller: App\Controller\MovieSeeController::index
+
+getMovieToSeeList:
+    path: /movies/toSee/
+    controller: App\Controller\MovieToSeeController::index

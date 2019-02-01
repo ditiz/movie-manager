@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Chercher un film{% endblock %}
+{% block title %}Hello MovieSeeController!{% endblock %}
 
 {% block body %}
     <div class='search'>
@@ -13,19 +13,16 @@
                 </div>
             {% endif %}
 
-            <h1>Chercher un film</h1>
+            <h1>{{ title }}</h1>
 
             <form method="post" action='{{ path("searchMovie") }}'>
                 <input type="hidden" name='page' value='1'>
             
-                <h3><label for="search">Nom du Film</label></h3>
-                <input id="search" type="text" name="search" value="{{ search }}"/>
-            
-                <input type="submit" value="Chercher"/>
+              
             </form>
         
 
-            {% if results is defined %}
+            {% if movies is defined %}
                 <form method="post" name="action" action="{{ path('updateTooSeeAndSeeMovieInfo') }}"> 
                     <table>
                         <thead>
@@ -36,14 +33,14 @@
                             <th>Film vu</th>
                         </thead>
                         <tbody>
-                            {% for key, result in results %}
-                                {% if watch_infos.toSee[result.imdbID] is not null %}
+                            {% for key, movie in movies %}
+                                {% if watch_infos.toSee[movie.imdbID] is not null %}
                                     {% set to_see = 'checked' %}
                                 {% else %}
                                     {% set to_see = '' %}
                                 {% endif %}
 
-                                {% if watch_infos.see[result.imdbID] is not null %}
+                                {% if watch_infos.see[movie.imdbID] is not null %}
                                     {% set see = 'checked' %}
                                 {% else %}
                                     {% set see = '' %}
@@ -51,21 +48,20 @@
 
                                 <tr>
                                     <td>
-                                        <a href="{{ path('getMovieDetail', {'imdbID': result.imdbID}) }}">
-                                            <img src="{{ result.Poster }}" alt="poster" class='poster'>
+                                        <a href="{{ path('getMovieDetail', {'imdbID': movie.imdbID}) }}">
+                                            <img src="{{ movie.poster }}" alt="poster" class='poster'>
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="{{ path('getMovieDetail', {'imdbID': result.imdbID}) }}">
-                                            {{ result.Title }} <br> {{ result.Year }} 
+                                        <a href="{{ path('getMovieDetail', {'imdbID': movie.imdbID}) }}">
+                                            {{ movie.name }} <br> {{ movie.year }} 
                                         </a>
                                     </td>
-                                    <td>{{ result.Type }}</td>
                                     <td>
                                         <label class="container">
                                             <input 
                                                 type="checkbox" 
-                                                name='movies[{{ result.imdbID }}][to_see]'
+                                                name='movies[{{ movie.imdbID }}][to_see]'
                                                 {{ to_see }}
                                             >
                                             <span class="checkmark"></span>
@@ -75,7 +71,7 @@
                                         <label class="container">
                                             <input 
                                                 type="checkbox" 
-                                                name='movies[{{ result.imdbID }}][see]' 
+                                                name='movies[{{ movie.imdbID }}][see]' 
                                                 {{ see }}
                                             >
                                             <span class="checkmark"></span>
@@ -90,23 +86,6 @@
                             <input type="submit" value="Enregister">   
                     </div>
                 </form>
-
-                <div class='bottom'>
-                    <form method="post" accept-charset="UTF-8">
-                            <input type="hidden" name="action" value="{{ path('searchMovie') }}">
-                            <input id="search" type="hidden" name="search" value="{{ search }}"/>
-                            <input type="hidden" name='page' value='{{ page - 1 }}'>
-                        
-                            <input type="submit" value="Page précédante"/>
-                    </form>
-                    <form method="post" accept-charset="UTF-8">
-                            <input type="hidden" name="action" value="{{ path('searchMovie') }}">
-                            <input id="search" type="hidden" name="search" value="{{ search }}"/>
-                            <input type="hidden" name='page' value='{{ page + 1 }}'>
-                        
-                            <input type="submit" value="Page suivante"/>
-                    </form>
-                </div>
             {% endif %}
 
         {% if error is defined and error|length > 0 %}
@@ -119,3 +98,4 @@
         </div>
     </div>
 {% endblock %}
+

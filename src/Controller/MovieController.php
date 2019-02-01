@@ -137,7 +137,7 @@ class MovieController extends AbstractController
         foreach ($movies as $movie) {
             $watch_infos['toSee'][$movie['imdbID']] = $this->getDoctrine()
                 ->getRepository(MovieToSee::class)
-                ->findOneBy(['imdbID' => $movie['imdbID'], 'too_see' => 1]);
+                ->findOneBy(['imdbID' => $movie['imdbID'], 'to_see' => 1]);
 
             $watch_infos['see'][$movie['imdbID']] = $this->getDoctrine()
                 ->getRepository(MovieSee::class)
