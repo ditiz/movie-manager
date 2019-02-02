@@ -2,19 +2,27 @@ header {
     
     ul {
         background: #000000;
-        margin-top: 0;
-        padding: .375rem .75rem;
+        margin: 0;
+        height: 5rem;
         list-style: none;
-        display: flex;
+        display: flex;  
         justify-content: center;
     }
-
+    
     li {
         line-height: 35px;
-        padding: .375rem .75rem;
+        display: flex;  
+        align-items: center;
+        transition: 0.15s;
 
         &:hover {
             background: #484848
+        }
+        
+        a:link {
+            text-decoration: none;
+            padding: .375rem 1.75rem;
+            font-size: 1.75rem;
         }
     }
 
