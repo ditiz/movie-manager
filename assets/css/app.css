@@ -1,10 +1,10 @@
 body {
-    background-color: #111111;
+    background-color: #212121;
     font-size: 16px;
     color: white;
 }
 
-button, input[type="submit"], input[type="button"] {
+/* button, input[type="submit"], input[type="button"] {
     background: #2ECC40;
     color: white;
     padding: .375rem .75rem;
@@ -21,7 +21,7 @@ button, input[type="submit"], input[type="button"] {
 
 button:hover, input[type="submit"]:hover, input[type="button"]:hover {
     background: #1f892b;
-} 
+}  */
 
 input {
     padding: .375rem .75rem;

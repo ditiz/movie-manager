@@ -39,7 +39,7 @@ Encore
     .enableVersioning(Encore.isProduction())
 
     // enables Sass/SCSS support
-    //.enableSassLoader()
+    .enableSassLoader()
 
     // enable React 
     .enableReactPreset()
