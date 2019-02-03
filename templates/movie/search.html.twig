@@ -15,13 +15,17 @@
 
             <h1>Chercher un film</h1>
 
-            <form method="post" action='{{ path("searchMovie") }}'>
+            <form method="post" action='{{ path("searchMovie") }}' class="form-search">
                 <input type="hidden" name='page' value='1'>
-            
-                <h3><label for="search">Nom du Film</label></h3>
-                <input id="search" type="text" name="search" value="{{ search }}"/>
-            
-                <input type="submit" value="Chercher"/>
+                
+                <div class="group">
+                    <input type="text" name="search" value={{ search }}>
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Titre</label>
+                </div>
+                
+                <input type="submit" value="Chercher" class='rkmd-btn btn-orange ripple-effect'/>
             </form>
         
 
@@ -97,14 +101,14 @@
                             <input id="search" type="hidden" name="search" value="{{ search }}"/>
                             <input type="hidden" name='page' value='{{ page - 1 }}'>
                         
-                            <input type="submit" value="Page précédante" class="rkmd-btn btn-green ripple-effect"/>
+                            <input type="submit" value="Page précédante" class="rkmd-btn btn-lightBlue ripple-effect"/>
                     </form>
                     <form method="post" accept-charset="UTF-8">
                             <input type="hidden" name="action" value="{{ path('searchMovie') }}">
                             <input id="search" type="hidden" name="search" value="{{ search }}"/>
                             <input type="hidden" name='page' value='{{ page + 1 }}'>
                         
-                            <input type="submit" value="Page suivante" class="rkmd-btn btn-green ripple-effect"/>
+                            <input type="submit" value="Page suivante" class="rkmd-btn btn-lightBlue ripple-effect"/>
                     </form>
                 </div>
             {% endif %}

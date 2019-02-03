@@ -7,9 +7,10 @@
 
 // any CSS you require will output into a single css file (app.css in this case)
 require('../css/material-theming-button.scss');
+require('../css/material-theming-input.scss');
 
 require('../css/app.css');
-require('../css/search.css');
+require('../css/search.scss');
 require('../css/header.scss')
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');

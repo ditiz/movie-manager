@@ -4,24 +4,16 @@ body {
     color: white;
 }
 
-/* button, input[type="submit"], input[type="button"] {
-    background: #2ECC40;
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px #212121 inset !important;
     color: white;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border: none;
-    border: 1px solid transparent;
-    transition: color .15s ease-in-out,
-        background-color .15s ease-in-out,
-        border-color .15s ease-in-out,
-        box-shadow .15s ease-in-out;
-    cursor: pointer;
 }
-
-button:hover, input[type="submit"]:hover, input[type="button"]:hover {
-    background: #1f892b;
-}  */
+input:-webkit-autofill {
+    -webkit-text-fill-color: #ff9800 !important;
+}
 
 input {
     padding: .375rem .75rem;

@@ -106,3 +106,11 @@
     padding: .375rem .75rem;
     text-align: center;
 }
+
+form.form-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+    padding-bottom: 3rem;
+}
