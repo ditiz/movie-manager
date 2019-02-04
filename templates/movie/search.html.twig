@@ -91,26 +91,23 @@
                     </table>
 
                     <div class='bottom-form'>
-                        <input type="submit" value="Enregister" class="rkmd-btn btn-green ripple-effect">   
+                        <a 
+                            href="{{ path('searchMoviePage', {'page': page - 1, 'search': search}) }}" 
+                            class="rkmd-btn btn-lightBlue ripple-effect"
+                        >
+                            Précédent
+                        </a>
+
+                        <input type="submit" value="Enregister" class="rkmd-btn btn-green ripple-effect"> 
+
+                        <a 
+                            href="{{ path('searchMoviePage', {'page': page + 1, 'search': search}) }}"
+                            class="rkmd-btn btn-lightBlue ripple-effect"
+                        >
+                            Suivant
+                        </a>
                     </div>
                 </form>
-
-                <div class='bottom'>
-                    <form method="post" accept-charset="UTF-8">
-                            <input type="hidden" name="action" value="{{ path('searchMovie') }}">
-                            <input id="search" type="hidden" name="search" value="{{ search }}"/>
-                            <input type="hidden" name='page' value='{{ page - 1 }}'>
-                        
-                            <input type="submit" value="Page précédante" class="rkmd-btn btn-lightBlue ripple-effect"/>
-                    </form>
-                    <form method="post" accept-charset="UTF-8">
-                            <input type="hidden" name="action" value="{{ path('searchMovie') }}">
-                            <input id="search" type="hidden" name="search" value="{{ search }}"/>
-                            <input type="hidden" name='page' value='{{ page + 1 }}'>
-                        
-                            <input type="submit" value="Page suivante" class="rkmd-btn btn-lightBlue ripple-effect"/>
-                    </form>
-                </div>
             {% endif %}
 
         {% if error is defined and error|length > 0 %}

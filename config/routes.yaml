@@ -13,14 +13,18 @@ displaySearchMovie:
 
 searchMovie:
     path: /movies/search/
-    controller: App\Controller\MovieController::useSearchPage
+    controller: App\Controller\MovieController::useSearchPagePost
     methods: [POST]
+
+searchMoviePage:
+    path: /movies/search/{search}/{page}
+    controller: App\Controller\MovieController::useSearchPage
+    methods: [GET]
 
 updateTooSeeAndSeeMovieInfo:
     path: /movies/search/update
     controller: App\Controller\MovieController::updateMovieToSeeFromSearch
     methods: [POST]
-
 
 getFilmByImdbID:
     path: /api/getFilmByImdbID

@@ -37,11 +37,19 @@ class MovieController extends AbstractController
         ]);
     }
 
-    public function useSearchPage(Request $request) {
+    public function useSearchPagePost(Request $request) {
         $search = $request->get('search');
         $page = $request->get('page');
 
-        $page = isset($page) ? $page : 1;
+        return $this->forward('App\Controller\MovieController::useSearchPage', [
+            'search' => $search,
+            'page' => $page,
+        ]);
+    }
+
+    public function useSearchPage($page = 1, $search = '') {
+        $search = $search;
+        $page = $page;
 
         $results = $this->searchMovie($search, $page);
 
