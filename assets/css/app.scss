@@ -4,21 +4,21 @@ body {
     color: white;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active  {
-    -webkit-box-shadow: 0 0 0 30px #212121 inset !important;
-    color: white;
-}
-input:-webkit-autofill {
-    -webkit-text-fill-color: #ff9800 !important;
-}
-
 input {
     padding: .375rem .75rem;
     font-size: 1rem;
     line-height: 1.5;
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover, 
+    &:-webkit-autofill:focus, 
+    &:-webkit-autofill:active  {
+        -webkit-box-shadow: 0 0 0 30px #212121 inset !important;
+        color: white;
+    }
+    &:-webkit-autofill {
+        -webkit-text-fill-color: #ff9800 !important;
+    }
 }
 
 a {

@@ -9,7 +9,7 @@
 require('../css/material-theming-button.scss');
 require('../css/material-theming-input.scss');
 
-require('../css/app.css');
+require('../css/app.scss');
 require('../css/search.scss');
 require('../css/header.scss')
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
