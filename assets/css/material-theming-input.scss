@@ -24,12 +24,12 @@ body {
 }
 
 // INPUTS // ============================== //
-textarea {
+.group textarea {
   resize: none;
 }
 
-input,
-textarea {
+.group input,
+.group textarea {
   background: none;
   color: $muted-color;
   font-size: 18px;
@@ -53,11 +53,11 @@ textarea {
   }
 }
 
-input[type="password"] {
+.group input[type="password"] {
   letter-spacing: 0.3em;
 }
 
-label {
+.group label {
   color: $muted-color;
   font-size: 16px;
   font-weight: normal;
@@ -68,7 +68,7 @@ label {
   transition: $trans-time ease all;
 }
 
-.bar {
+.group .bar {
   position: relative;
   display: block;
   width: $width;
@@ -85,7 +85,7 @@ label {
 }
 
 // BUTTONS // ============================== //
-.btn {
+.group .btn {
   background: #fff;
   color: mix(black, $muted-color, 25%);
   border: none;
@@ -126,7 +126,7 @@ label {
   }
 }
 
-.btn-box {
+.group .btn-box {
   text-align: center;
   margin: 50px 0;
 }
