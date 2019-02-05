@@ -4,9 +4,18 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Movie;
+use Symfony\Component\HttpFoundation\Response;
+use App\Controller\ManageOmdbApi;
+use Twig\Environment;
 
 class MovieDetailController extends AbstractController
 {
+    public function __construct(Environment $twig, ManageOmdbApi $omdb)
+    {
+        $this->twig = $twig;
+        $this->omdb = $omdb;
+    }
+
     public function index($imdbID)
     {
         $movie = $this->getDoctrine()
@@ -14,11 +23,13 @@ class MovieDetailController extends AbstractController
             ->findOneBy(['imdbID' => $imdbID]);
 
         if ($movie == null) {
-            return false;
+            $movie = $this->omdb->getMovieByImdbID($imdbID);
         }
 
-        return $this->render('movie_detail/index.html.twig', [
+        $response = $this->twig->render('movie_detail/index.html.twig', [
             'movie' => $movie,
         ]);
+
+        return new Response($response);
     }
 }

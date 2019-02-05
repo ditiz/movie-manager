@@ -4,13 +4,13 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Movie;
 use App\Entity\MovieSee;
 use App\Entity\MovieToSee;
-use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
-
 use App\Controller\ManageOmdbApi;
+
 
 class MovieController extends AbstractController
 {
