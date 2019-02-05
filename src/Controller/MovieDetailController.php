@@ -10,6 +10,9 @@ use Twig\Environment;
 
 class MovieDetailController extends AbstractController
 {
+    private $twig;
+    private $omdb;
+
     public function __construct(Environment $twig, ManageOmdbApi $omdb)
     {
         $this->twig = $twig;

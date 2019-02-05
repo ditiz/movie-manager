@@ -75,4 +75,17 @@ class ManageOmdbApi extends AbstractController
 
         return json_decode($result, true);
     }
+
+    public function getMovieFromDatabase(string $imdbID)
+    {
+        $movie = $this->getDoctrine()
+            ->getRepository(Movie::class)
+            ->findOneBy(['imdbID' => $imdbID]);
+
+        if (!$movie) {
+            $movie = $this->getMovieByImdbID($imdbID);
+        }
+
+        return $movie;
+    }
 }

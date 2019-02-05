@@ -10,14 +10,23 @@ use App\Entity\MovieSee;
 use App\Entity\MovieToSee;
 use Twig\Environment;
 use App\Controller\ManageOmdbApi;
+use App\Controller\MovieWatchingController;
 
 
 class MovieController extends AbstractController
 {
-    public function __construct(Environment $twig, ManageOmdbApi $omdb)
-    {
+    private $twig;
+    private $omdb;
+    private $watching;
+
+    public function __construct(
+        Environment $twig, 
+        ManageOmdbApi $omdb,
+        MovieWatchingController $watching
+    ) {
         $this->twig = $twig;
         $this->omdb = $omdb;
+        $this->watching = $watching;
     }
 
     public function listMovies()
@@ -64,7 +73,7 @@ class MovieController extends AbstractController
         } else {
             $results = $results['Search'];
 
-            $watch_infos = $this->getWatchInfo($results);
+            $watch_infos = $this->watching->getWatchInfo($results);
 
             $response = $this->twig->render('movie/search.html.twig',[
                 'results' => $results,
@@ -75,107 +84,6 @@ class MovieController extends AbstractController
 
             return new Response($response);
         }
-    }
-
-    public function updateMovieToSeeFromSearch(Request $request) 
-    {
-        $modif = [];
-        $movies = $request->get('movies');
-
-        $entityManager = $this->getDoctrine()->getManager();
-
-        foreach ($movies as $imdbID => $movie) {
-            if (isset($movie['to_see'])) {
-                $MovieToSee = $this->getDoctrine()
-                    ->getRepository(MovieToSee::class)
-                    ->findOneBy(['imdbID' => $imdbID]);
-                    
-                if (!isset($MovieToSee)) {
-                    $MovieToSee = new MovieToSee();
-
-                    $MovieToSee->setImdbId($imdbID);
-                    
-                    $toSee = $movie['to_see'] == 'on' ? 1 : 0;
-                    $MovieToSee->setTooSee($toSee);
-                    
-                    $movieFromDatabase = $this->getMovieFromDatabase($imdbID);
-                    $MovieToSee->setMovieId($movieFromDatabase->getId());
-
-                    $entityManager->persist($MovieToSee);
-
-                    $modif[$movieFromDatabase->getName()] = 'ajouter à film à voir';
-                } else {
-                    $modif[$movieFromDatabase->getName()] = 'déjà dans ce status pour film à voir';
-                }
-            }
-
-            if (isset($movie['see'])) {
-
-                $MovieSee = $this->getDoctrine()
-                    ->getRepository(MovieSee::class)
-                    ->findOneBy(['imdbID' => $imdbID]);
-
-                if (!isset($MovieSee)) {
-                    $MovieSee = new MovieSee();
-
-                    $MovieSee->setImdbId($imdbID);
-                    
-                    $see = $movie['see'] == 'on' ? 1 : 0;
-                    $MovieSee->setSee($see);
-                    
-                    $movieFromDatabase = $this->getMovieFromDatabase($imdbID);
-                    $MovieSee->setMovieId($movieFromDatabase->getId());
-
-                    $entityManager->persist($MovieSee);
-
-                    $modif[$movieFromDatabase->getName()] = 'ajouter à film à voir';
-                } else {
-                    $movieFromDatabase = $this->getMovieFromDatabase($imdbID);
-                    $modif[$movieFromDatabase->getName()] = 'déjà dans ce status pour film vu';
-                }
-            }
-        }
-        $entityManager->flush();
-
-
-        $response = $this->twig->render('movie/search.html.twig', [
-            'search' => '',
-            'messages' => $modif
-        ]);
-
-        return new Response($response);
-    }
-
-    private function getWatchInfo($movies) {
-        $watch_infos = [];
-        foreach ($movies as $movie) {
-            $watch_infos['toSee'][$movie['imdbID']] = $this->getDoctrine()
-                ->getRepository(MovieToSee::class)
-                ->findOneBy(['imdbID' => $movie['imdbID'], 'to_see' => 1]);
-
-            $watch_infos['see'][$movie['imdbID']] = $this->getDoctrine()
-                ->getRepository(MovieSee::class)
-                ->findOneBy(['imdbID' => $movie['imdbID'], 'see' => 1]);
-        }
-
-        if ($watch_infos == []) {
-            return false;
-        }
-
-        return $watch_infos;
-    }
-
-    private function getMovieFromDatabase(string $imdbID)
-    {
-        $movie = $this->getDoctrine()
-            ->getRepository(Movie::class)
-            ->findOneBy(['imdbID' => $imdbID]);
-
-        if (!$movie) {
-            $movie = $this->omdb->getMovieByImdbID($imdbID);
-        }
-
-        return $movie;
     }
 
     private function searchMovie($search, int $page = 1) : array
