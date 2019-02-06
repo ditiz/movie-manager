@@ -4,7 +4,7 @@ listMovie:
 
 apiListMovie:
     path: /api/movies/
-    controller: App\Controller\MovieController::apiListMovies
+    controller: App\Controller\Api\MovieListController::index
 
 displaySearchMovie:
     path: /movies/search/

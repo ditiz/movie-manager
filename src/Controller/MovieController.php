@@ -5,10 +5,12 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Twig\Environment;
+
 use App\Entity\Movie;
 use App\Entity\MovieSee;
 use App\Entity\MovieToSee;
-use Twig\Environment;
+
 use App\Controller\ManageOmdbApi;
 use App\Controller\MovieWatchingController;
 
@@ -38,15 +40,6 @@ class MovieController extends AbstractController
         return $this->render('movie/index.html.twig', ['movies' => $movies]);
     }
 
-    public function apiListMovies()
-    {
-        $movies = $this->getDoctrine()
-            ->getRepository(Movie::class)
-            ->findAll();
-
-        return $this->json($movies);
-    }
-
     public function getSearchPage($messages = []) 
     {
         $response = $this->twig->render('movie/search.html.twig', [
@@ -73,7 +66,7 @@ class MovieController extends AbstractController
         } else {
             $results = $results['Search'];
 
-            $watch_infos = $this->watching->getWatchInfo($results);
+            $watch_infos = $this->watching->getWatchInfoArray($results);
 
             $response = $this->twig->render('movie/search.html.twig',[
                 'results' => $results,
@@ -109,11 +102,4 @@ class MovieController extends AbstractController
 
         return json_decode($result, true);
     }
-}
-
-function dd(...$params) {
-    foreach($params as $param) {
-        dump($param);
-    }
-    die;
 }

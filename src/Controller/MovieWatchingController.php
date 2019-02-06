@@ -92,7 +92,7 @@ class MovieWatchingController extends AbstractController
 		return new Response($response);
     }
 
-    public function getWatchInfo($movies) {
+    public function getWatchInfoArray($movies) {
         $watch_infos = [];
         foreach ($movies as $movie) {
             $watch_infos['toSee'][$movie['imdbID']] = $this->getDoctrine()
@@ -111,4 +111,22 @@ class MovieWatchingController extends AbstractController
         return $watch_infos;
     }
 
+    public function getWatchInfoObject($movies) {
+        $watch_infos = [];
+        foreach ($movies as $movie) {
+            $watch_infos['toSee'][$movie->getimdbID()] = $this->getDoctrine()
+                ->getRepository(MovieToSee::class)
+                ->findOneBy(['imdbID' =>$movie->getimdbID(), 'to_see' => 1]);
+
+            $watch_infos['see'][$movie->getimdbID()] = $this->getDoctrine()
+                ->getRepository(MovieSee::class)
+                ->findOneBy(['imdbID' => $movie->getimdbID(), 'see' => 1]);
+        }
+
+        if ($watch_infos == []) {
+            return false;
+        }
+
+        return $watch_infos;
+    }
 }
