@@ -12,6 +12,7 @@ require('../css/material-theming-input.scss');
 require('../css/app.scss');
 require('../css/search.scss');
 require('../css/header.scss')
+require('../css/movie-detail.scss')
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');
 
