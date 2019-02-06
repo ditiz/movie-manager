@@ -15,10 +15,7 @@ class MovieWatchingController extends AbstractController
 	private $twig;
     private $omdb;
 
-    public function __construct(
-        Environment $twig, 
-        ManageOmdbApi $omdb
-    ) {
+    public function __construct(Environment $twig, ManageOmdbApi $omdb) {
         $this->twig = $twig;
         $this->omdb = $omdb;
     }
