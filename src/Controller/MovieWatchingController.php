@@ -29,52 +29,23 @@ class MovieWatchingController extends AbstractController
 
         foreach ($movies as $imdbID => $movie) {
             if (isset($movie['to_see'])) {
-                $MovieToSee = $this->getDoctrine()
-                    ->getRepository(MovieToSee::class)
-                    ->findOneBy(['imdbID' => $imdbID]);
-                    
-                if (!isset($MovieToSee)) {
-                    $MovieToSee = new MovieToSee();
+                $MovieToSee = $this->manageToSee($imdbID, $movie);
 
-                    $MovieToSee->setImdbId($imdbID);
-                    
-                    $toSee = $movie['to_see'] == 'on' ? 1 : 0;
-                    $MovieToSee->setTooSee($toSee);
-                    
-                    $movieFromDatabase = $this->omdb->getMovieFromDatabase($imdbID);
-                    $MovieToSee->setMovieId($movieFromDatabase->getId());
-
+                if ($MovieToSee) {
                     $entityManager->persist($MovieToSee);
-
+    
+                    $movieFromDatabase = $this->omdb->getMovieFromDatabase($imdbID);
                     $modif[$movieFromDatabase->getName()] = 'ajouter à film à voir';
-                } else {
-                    $modif[$movieFromDatabase->getName()] = 'déjà dans ce status pour film à voir';
                 }
             }
 
             if (isset($movie['see'])) {
-
-                $MovieSee = $this->getDoctrine()
-                    ->getRepository(MovieSee::class)
-                    ->findOneBy(['imdbID' => $imdbID]);
-
-                if (!isset($MovieSee)) {
-                    $MovieSee = new MovieSee();
-
-                    $MovieSee->setImdbId($imdbID);
-                    
-                    $see = $movie['see'] == 'on' ? 1 : 0;
-                    $MovieSee->setSee($see);
-                    
-                    $movieFromDatabase = $this->omdb->getMovieFromDatabase($imdbID);
-                    $MovieSee->setMovieId($movieFromDatabase->getId());
-
+                $MovieSee = $this->manageSee($imdbID, $movie);
+                
+                $movieFromDatabase = $this->omdb->getMovieFromDatabase($imdbID);
+                if ($MovieSee) {
                     $entityManager->persist($MovieSee);
-
                     $modif[$movieFromDatabase->getName()] = 'ajouter à film à voir';
-                } else {
-                    $movieFromDatabase = $this->omdb->getMovieFromDatabase($imdbID);
-                    $modif[$movieFromDatabase->getName()] = 'déjà dans ce status pour film vu';
                 }
             }
         }
@@ -125,5 +96,47 @@ class MovieWatchingController extends AbstractController
         }
 
         return $watch_infos;
+    }
+
+    private function manageToSee($imdbID, $movie) 
+    {
+        $MovieToSee = $this->getDoctrine()
+            ->getRepository(MovieToSee::class)
+            ->findOneBy(['imdbID' => $imdbID]);
+            
+        if (!isset($MovieToSee)) {
+            $MovieToSee = new MovieToSee();
+
+            $MovieToSee->setImdbId($imdbID);
+            
+            $toSee = $movie['to_see'] == 'on' ? 1 : 0;
+            $MovieToSee->setTooSee($toSee);
+            
+            $movieFromDatabase = $this->omdb->getMovieFromDatabase($imdbID);
+            $MovieToSee->setMovieId($movieFromDatabase->getId());
+            
+            return $MovieToSee;
+        }
+    }
+
+    private function manageSee($imdbID, $movie)
+    {
+        $MovieSee = $this->getDoctrine()
+            ->getRepository(MovieSee::class)
+            ->findOneBy(['imdbID' => $imdbID]);
+
+        if (!isset($MovieSee)) {
+            $MovieSee = new MovieSee();
+
+            $MovieSee->setImdbId($imdbID);
+            
+            $see = $movie['see'] == 'on' ? 1 : 0;
+            $MovieSee->setSee($see);
+            
+            $movieFromDatabase = $this->omdb->getMovieFromDatabase($imdbID);
+            $MovieSee->setMovieId($movieFromDatabase->getId());
+
+            return $MovieSee;
+        }
     }
 }
