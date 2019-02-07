@@ -1,4 +1,10 @@
-.image {
-	display: flex;
-	justify-content: center;
+.detail {
+	.image {
+		display: flex;
+		justify-content: center;
+	}
+
+	h1, h2 {
+		color: #eeff41;
+	}
 }

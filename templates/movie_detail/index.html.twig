@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MovieDetailController!{% endblock %}
+{% block title %}Détail {{ movie.name }}{% endblock %}
 
 {% block body %}
-<div class='wrapper'>
+<div class='wrapper detail'>
     <h1>{{ movie.name }}</h1>
 
     <div class='image'>
@@ -15,6 +15,11 @@
         <p>
             {{ movie.plot }}
         </p>
+    </div>
+
+    <div>
+        <h2>Année</h2>
+        <p>{{ movie.year }}</p>
     </div>
 
     <div>
