@@ -47,6 +47,12 @@
 
                                 <tr>
                                     <td>
+                                        <input 
+                                            type="hidden" 
+                                            name="movies[{{ movie.imdbID }}][imdbID]" 
+                                            value="{{ movie.imdbID }}"
+                                        >
+
                                         <a href="{{ path('getMovieDetail', {'imdbID': movie.imdbID}) }}">
                                             <img src="{{ movie.poster }}" alt="poster" class='poster'>
                                         </a>

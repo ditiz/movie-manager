@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Movie;
 use App\Entity\MovieToSee;
 use App\Entity\MovieSee;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,46 +19,6 @@ class MovieWatchingController extends AbstractController
     public function __construct(Environment $twig, ManageOmdbApi $omdb) {
         $this->twig = $twig;
         $this->omdb = $omdb;
-    }
-
-	public function updateMovieToSeeFromSearch(Request $request) 
-    {
-        $modif = [];
-        $movies = $request->get('movies');
-
-        $entityManager = $this->getDoctrine()->getManager();
-
-        foreach ($movies as $imdbID => $movie) {
-            if (isset($movie['to_see'])) {
-                $MovieToSee = $this->manageToSee($imdbID, $movie);
-
-                if ($MovieToSee) {
-                    $entityManager->persist($MovieToSee);
-    
-                    $movieFromDatabase = $this->omdb->getMovieFromDatabase($imdbID);
-                    $modif[$movieFromDatabase->getName()] = 'ajouter à film à voir';
-                }
-            }
-
-            if (isset($movie['see'])) {
-                $MovieSee = $this->manageSee($imdbID, $movie);
-                
-                $movieFromDatabase = $this->omdb->getMovieFromDatabase($imdbID);
-                if ($MovieSee) {
-                    $entityManager->persist($MovieSee);
-                    $modif[$movieFromDatabase->getName()] = 'ajouter à film à voir';
-                }
-            }
-        }
-        $entityManager->flush();
-
-
-        $response = $this->twig->render('movie/search.html.twig', [
-            'search' => '',
-            'messages' => $modif
-		]);
-		
-		return new Response($response);
     }
 
     public function getWatchInfoArray($movies) {
@@ -98,28 +59,75 @@ class MovieWatchingController extends AbstractController
         return $watch_infos;
     }
 
-    private function manageToSee($imdbID, $movie) 
+	public function updateMovieToSeeFromSearch(Request $request) 
+    {
+        $modif = [];
+        $movies = $request->get('movies');
+
+        $imdbIDList = array_keys($movies);
+
+        $databaseMoviesInfos = $this->getDoctrine()
+            ->getRepository(Movie::class)
+            ->findMovieWithWatchingByImdbIDs($imdbIDList);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        foreach ($databaseMoviesInfos as $movieInfos) {
+            //Manage MovieToSee
+            if (isset($movies[$movieInfos['m_imdbID']]['to_see'])) {
+                if ($movieInfos['mts_to_see'] == 0 || $movieInfos['mts_to_see'] == null) {
+                    $this->manageToSee($movieInfos['m_imdbID'], 1);
+                }
+            } else {
+                if ($movieInfos['mts_to_see'] != 0 || $movieInfos['mts_to_see'] != null) {
+                    $this->manageToSee($movieInfos['m_imdbID'], 0);
+                }
+            }
+
+            //Manage MovieSee
+            if (isset($movies[$movieInfos['m_imdbID']]['see'])) {
+                if ($movieInfos['ms_see'] == 0 || $movieInfos['ms_see'] == null) {
+                    $this->manageSee($movieInfos['m_imdbID'], 1);
+                }
+            } else {
+                if ($movieInfos['ms_see'] != 0 || $movieInfos['ms_see'] != null) {
+                    $this->manageSee($movieInfos['m_imdbID'], 0);
+                }
+            }
+
+        }
+
+        $entityManager->flush();
+
+
+        $response = $this->twig->render('movie/search.html.twig', [
+            'search' => '',
+            'messages' => $modif
+		]);
+		
+		return new Response($response);
+    }
+
+    private function manageToSee($imdbID, $status) 
     {
         $MovieToSee = $this->getDoctrine()
             ->getRepository(MovieToSee::class)
             ->findOneBy(['imdbID' => $imdbID]);
-            
+
         if (!isset($MovieToSee)) {
             $MovieToSee = new MovieToSee();
-
             $MovieToSee->setImdbId($imdbID);
-            
-            $toSee = $movie['to_see'] == 'on' ? 1 : 0;
-            $MovieToSee->setTooSee($toSee);
-            
-            $movieFromDatabase = $this->omdb->getMovieFromDatabase($imdbID);
-            $MovieToSee->setMovieId($movieFromDatabase->getId());
-            
-            return $MovieToSee;
         }
+
+        $MovieToSee->setToSee($status);
+        
+        $movieFromDatabase = $this->omdb->getMovieFromDatabase($imdbID);
+        $MovieToSee->setMovieId($movieFromDatabase->getId());
+        
+        return $MovieToSee;
     }
 
-    private function manageSee($imdbID, $movie)
+    private function manageSee($imdbID, $status)
     {
         $MovieSee = $this->getDoctrine()
             ->getRepository(MovieSee::class)
@@ -127,16 +135,14 @@ class MovieWatchingController extends AbstractController
 
         if (!isset($MovieSee)) {
             $MovieSee = new MovieSee();
-
             $MovieSee->setImdbId($imdbID);
-            
-            $see = $movie['see'] == 'on' ? 1 : 0;
-            $MovieSee->setSee($see);
-            
-            $movieFromDatabase = $this->omdb->getMovieFromDatabase($imdbID);
-            $MovieSee->setMovieId($movieFromDatabase->getId());
-
-            return $MovieSee;
         }
+        
+        $MovieSee->setSee($status);
+        
+        $movieFromDatabase = $this->omdb->getMovieFromDatabase($imdbID);
+        $MovieSee->setMovieId($movieFromDatabase->getId());
+
+        return $MovieSee;
     }
 }
