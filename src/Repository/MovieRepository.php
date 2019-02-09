@@ -36,7 +36,7 @@ class MovieRepository extends ServiceEntityRepository
     }
     */
 
-        /**
+    /**
     * @return MovieSee[] Returns an array of MovieSee objects
     */
     public function findMovieWithWatchingByImdbIDs($imdbIDList)
@@ -44,12 +44,11 @@ class MovieRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('m')
             ->leftJoin('App\Entity\MovieToSee', 'mts', 'WITH', 'm.id = mts.movie_id')
             ->leftJoin('App\Entity\MovieSee', 'ms', 'WITH', 'm.id = ms.movie_id')
-
-            ->andWhere('m.imdbID IN (:imdbIDList)')
+            ->where('m.imdbID IN (:imdbIDList)')
             ->setParameter('imdbIDList', $imdbIDList)
             ->select('m, mts, ms')
             ->orderBy('m.id', 'ASC')
-            ->groupBy('m.id')
+            ->groupBy('m.id, mts.id, ms.id')
             ->getQuery()
             ->getScalarResult();
     }
