@@ -19,4 +19,22 @@ class MovieListController extends AbstractController
 
         return $this->json($movies);
     }
+
+    public function getOneByImdbID($imdbID)
+    {
+        $movies = $this->getDoctrine()
+            ->getRepository(Movie::class)
+            ->findBy(['imdbID' => $imdbID]);
+
+        return $this->json($movies);
+    }
+
+    public function getOneById($id)
+    {
+        $movies = $this->getDoctrine()
+            ->getRepository(Movie::class)
+            ->find($id);
+
+        return $this->json($movies);
+    }
 }

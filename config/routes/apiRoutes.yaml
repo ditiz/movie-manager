@@ -1,6 +1,10 @@
 getFilmByImdbID:
-    path: /getFilmByImdbID/{imdbID}
-    controller: App\Controller\MovieController::getFilmByImdbID
+    path: /movies/imdbID/{imdbID}
+    controller: App\Controller\Api\MovieListController::getOneByImdbID
+
+getFilmById:
+    path: /movies/id/{id}
+    controller: App\Controller\Api\MovieListController::getOneById
 
 apiListMovie:
     path: /movies/
