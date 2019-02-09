@@ -1,43 +1,10 @@
-listMovie:
-    path: /movies/list/
+home:
+    path: /
     controller: App\Controller\MovieController::listMovies
 
-apiListMovie:
-    path: /api/movies/
-    controller: App\Controller\Api\MovieListController::index
+multiplePage:
+    path: ./routes/multiplePageRoutes.yaml
 
-displaySearchMovie:
-    path: /movies/search/
-    controller: App\Controller\MovieController::getSearchPage
-    methods: [GET]
-
-searchMovie:
-    path: /movies/search/
-    controller: App\Controller\MovieController::useSearchPagePost
-    methods: [POST]
-
-searchMoviePage:
-    path: /movies/search/{search}/{page}
-    controller: App\Controller\MovieController::useSearchPage
-    methods: [GET]
-
-updateTooSeeAndSeeMovieInfo:
-    path: /movies/search/update
-    controller: App\Controller\MovieWatchingController::updateMovieToSeeFromSearch
-    methods: [POST]
-
-getFilmByImdbID:
-    path: /api/getFilmByImdbID
-    controller: App\Controller\MovieController::getFilmByImdbID
-
-getMovieDetail:
-    path: /movies/detail/{imdbID}
-    controller: App\Controller\MovieDetailController::index
-
-getMovieSeeList:
-    path: /movies/see/
-    controller: App\Controller\MovieSeeController::index
-
-getMovieToSeeList:
-    path: /movies/toSee/
-    controller: App\Controller\MovieToSeeController::index
+apiRouting: 
+    resource: ./routes/apiRoutes.yaml
+    prefix: /api/
