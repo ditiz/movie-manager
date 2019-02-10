@@ -19,6 +19,8 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('app-jsx', './assets/js/app/main.jsx')
+    .addEntry('material-theming-css', './assets/css/material-theming.css')
+    .addEntry('material-theming-js', './assets/js/material-theming.js')
 
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
