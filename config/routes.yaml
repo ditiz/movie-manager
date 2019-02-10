@@ -5,6 +5,10 @@ home:
 multiplePage:
     path: ./routes/multiplePageRoutes.yaml
 
+app:
+    path: /app/
+    controller: App\Controller\AppController::index
+
 apiRouting: 
     resource: ./routes/apiRoutes.yaml
     prefix: /api/
