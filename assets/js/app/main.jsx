@@ -19,8 +19,6 @@ class Main extends React.Component {
 				<CardMovie movie={movie}>
 					première carte
 				</CardMovie>
-
-				<div ref={this.divRef}></div>
 			</React.Fragment>
 		);
 	}
