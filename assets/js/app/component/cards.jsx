@@ -4,17 +4,36 @@ import styled from 'styled-components';
 import { BtnAddToSee, BtnAddSee } from './button';
 
 export const CardMovie = (props) => {
+
+	let actors = props.movie.actors.map((actor, index) => (
+		<li key={index}>{actor}</li>
+	));
+
 	return (
 		<Card className="mdc-card">
 			<Poster src={props.movie.poster} alt="poster"/>
 			<Right>
-				<h2>{props.movie.title}</h2>
+				<header>
+					<h2>{props.movie.title}</h2>
+					<small>{props.movie.year}</small>
+				</header>
 
-				<p>
-					{props.movie.plot}
-				</p>
+				<div>
+					<h3>Synopsis</h3>
+					<p>{props.movie.plot}</p>
+				</div>
 
-				<p>{props.movie.actors}</p>
+				<CastInfo>
+					<div>
+						<h3>Acteurs</h3>
+						<ul>{actors}</ul>
+					</div>
+
+					<div>
+						<h3>Réalisateur</h3>
+						<p>{props.movie.realisator}</p>
+					</div>
+				</CastInfo>
 
 				<Bottom>
 					<BtnAddToSee/>
@@ -27,13 +46,14 @@ export const CardMovie = (props) => {
 
 const Card = styled.div`
 	width: 50rem;
-	height: 30rem;
+	height: 35rem;
 	background: #212121;
 	color: #FFF;
 	display: flex;
 	justify-content: space-between;
 	flex-flow: row nowrap;
 	font-family: Roboto;
+	margin: 2rem auto;
 `
 
 const Poster = styled.img`
@@ -46,8 +66,9 @@ const Right = styled.div`
 	display: flex;
 	justify-content: space-between;
 	flex-flow: column nowrap;
+	padding: 0 0.875rem;
 
-	& h2 {
+	& header {
 		text-align: center;
 	}
 
@@ -60,5 +81,11 @@ const Bottom = styled.div`
 	display: flex;
 	justify-content: flex-end;
 	flex-flow: row nowrap;
-	margin: 10px 10px;
+	margin: 5px 0px;
+`
+
+const CastInfo = styled.div`
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-around;
 `
