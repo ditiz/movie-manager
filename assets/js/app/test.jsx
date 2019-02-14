@@ -27,7 +27,7 @@ export class Test extends React.Component {
 		return (
 			<React.Fragment>
 				<h1>Hello world!</h1>
-				æ
+				
 				<CardMovie movie={movie1} />
 				<CardMovie movie={movie2} />
 			</React.Fragment>
