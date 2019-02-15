@@ -1,23 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import { Test } from './test';
-import { Header } from './component/header'
+import { NavBar } from './component/header'
 
 class Main extends React.Component {
 	render() {
 		return (
 			<Router>
 				<div>
-					<Header>
-						<Link to='/app/toSee'>
-							Film à voir
-						</Link>
-						<Link to='/app/see'>
-							Film bu
-						</Link>
-					</Header>
+					<NavBar/>
 
 					<Route exact path='/app' component={Test} />
 					<Route exact path='/app/toSee' component={Test} />
