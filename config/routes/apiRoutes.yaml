@@ -1,3 +1,5 @@
+# prefix: /api/
+
 getFilmByImdbID:
     path: /movies/imdbID/{imdbID}
     controller: App\Controller\Api\MovieListController::getOneByImdbID

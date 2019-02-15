@@ -1,17 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
 
 import { BtnAddToSee, BtnAddSee } from './button';
 
 export const CardMovie = (props) => {
-
-	let actors = props.movie.actors.map((actor, index) => (
-		<li key={index}>{actor}</li>
-	));
+	let actors = <li>Pas d'acteur</li>
+	
+	if (Array.isArray(props.movie.actors)) {
+		actors = props.movie.actors.map((actor, index) => (
+			<li key={index}>{actor}</li>
+		));
+	}
 
 	return (
 		<Card className="mdc-card">
-			<Poster src={props.movie.poster} alt="poster"/>
+			<Link to={'/app/movie/' + props.imdbID}>
+				<Poster src={props.movie.poster} alt="poster"/>
+			</Link>
+
 			<Right>
 				<header>
 					<h2>{props.movie.title}</h2>
@@ -31,7 +38,7 @@ export const CardMovie = (props) => {
 
 					<div>
 						<h3>Réalisateur</h3>
-						<p>{props.movie.realisator}</p>
+						<p>{props.movie.director}</p>
 					</div>
 				</CastInfo>
 

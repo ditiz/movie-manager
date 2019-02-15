@@ -55,6 +55,10 @@ Encore
     // uncomment if you use API Platform Admin (composer req api-admin)
     //.enableReactPreset()
     //.addEntry('admin', './assets/js/admin.js')
+
+    .configureBabel(function (babelConfig) {
+        babelConfig.plugins = ['@babel/plugin-proposal-class-properties']
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();

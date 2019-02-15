@@ -16,10 +16,10 @@ export const NavBar = (props) => {
 			<Search>
 				<div className="mdc-text-field mdc-text-field--outlined">
 					<input type="text" className="mdc-text-field__input" aria-label="Label"/>
-						<div className="mdc-notched-outline">
-							<div className="mdc-notched-outline__leading"></div>
-							<div className="mdc-notched-outline__trailing"></div>
-						</div>
+					<div className="mdc-notched-outline">
+						<div className="mdc-notched-outline__leading"></div>
+						<div className="mdc-notched-outline__trailing"></div>
+					</div>
 				</div>
 			</Search>
 		</Header>

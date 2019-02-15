@@ -24,7 +24,7 @@ class MovieListController extends AbstractController
     {
         $movies = $this->getDoctrine()
             ->getRepository(Movie::class)
-            ->findBy(['imdbID' => $imdbID]);
+            ->findOneBy(['imdbID' => $imdbID]);
 
         return $this->json($movies);
     }
@@ -33,7 +33,7 @@ class MovieListController extends AbstractController
     {
         $movies = $this->getDoctrine()
             ->getRepository(Movie::class)
-            ->find($id);
+            ->findOne($id);
 
         return $this->json($movies);
     }
