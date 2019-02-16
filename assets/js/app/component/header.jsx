@@ -14,13 +14,10 @@ export const NavBar = (props) => {
 			</Link>
 
 			<Search>
-				<div className="mdc-text-field mdc-text-field--outlined">
-					<input type="text" className="mdc-text-field__input" aria-label="Label"/>
-					<div className="mdc-notched-outline">
-						<div className="mdc-notched-outline__leading"></div>
-						<div className="mdc-notched-outline__trailing"></div>
-					</div>
-				</div>
+				<input type="text"/>
+				<button>
+					<i className="material-icons">face</i>
+				</button>
 			</Search>
 		</Header>
 	)
@@ -46,12 +43,14 @@ a {
 `
 
 export const Search = styled.div`
-	border: #FFF 1px solid;
-	position: absolute;
-	right: 0;
-	max-height: 100%;
+	margin-left: auto;
 
-	input.mdc-text-field__input{
-		color: #FFF !important;
+	input {
+		border: #FFF 1px solid;
+		color: #000;
+		background: white;	
+		padding: .3rem .7rem;
+		font-size: 1.3rem;
+		border-radius: 3px;
 	}
 `
