@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import { CardMovie } from '../component/cards'
+import { Loader } from '../component/loader'
 
 class Movie extends Component {
 
@@ -11,7 +12,6 @@ class Movie extends Component {
 
 	componentDidMount() {
 
-		console.log("pouet")
 		let url = server + "api/movies/imdbID/" + this.props.match.params.imdbId
 		
 		fetch(url)
@@ -33,7 +33,7 @@ class Movie extends Component {
 	render() {
 		return (
 			<div>
-				{this.state.render ?
+				{this.state.ready == false ?
 					<Loader/> : 
 					<CardMovie movie={this.state.movie}/>
 				}
