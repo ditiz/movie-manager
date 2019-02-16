@@ -11,3 +11,7 @@ getFilmById:
 apiListMovie:
     path: /movies/
     controller: App\Controller\Api\MovieListController::index
+
+apiListMovieToSee:
+    path: /movies/toSee
+    controller: App\Controller\Api\MovieListController::toSee

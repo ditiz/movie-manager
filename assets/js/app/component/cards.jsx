@@ -1,24 +1,49 @@
-import React from 'react';
+import React, {Component} from 'react';
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
 
 import { BtnAddToSee, BtnAddSee } from './button';
 
-export const CardMovie = (props) => {
-	let actors = <li>Pas d'acteur</li>
-	
-	if (Array.isArray(props.movie.actors)) {
-		actors = props.movie.actors.map((actor, index) => (
-			<li key={index}>{actor}</li>
-		));
+export class CardMovie extends Component {
+	state = {
+		ready: false
 	}
 
-	return (
-		<Card className="mdc-card">
-			<Link to={'/app/movie/' + props.imdbID}>
-				<Poster src={props.movie.poster} alt="poster"/>
-			</Link>
+	imgLoad = () => {
+		this.setState({ ready: true})
+	}
 
+	redirectToMovie = () => {
+		this.props.history.push('/app/movie/' + this.props.movie.imdbId)
+	}  
+
+	render() {
+		return (
+			<Card className="mdc-card">
+				<Poster 
+					src={this.props.movie.poster} 
+					alt="poster" 
+					onLoad={this.imgLoad} 
+					onClick={this.redirectToMovie}
+				/>
+
+				<WaitImg imgReady={this.state.ready} {...this.props} />
+			</Card>
+		);
+	}
+}
+
+const WaitImg = (props) => {
+	if (props.imgReady) {
+		let actors = <li>Pas d'acteur</li>
+
+		if (Array.isArray(props.movie.actors)) {
+			actors = props.movie.actors.map((actor, index) => (
+				<li key={index}>{actor}</li>
+			));
+		}
+
+		return (
 			<Right>
 				<header>
 					<h2>{props.movie.title}</h2>
@@ -43,13 +68,15 @@ export const CardMovie = (props) => {
 				</CastInfo>
 
 				<Bottom>
-					<BtnAddToSee/>
-					<BtnAddSee/>
+					<BtnAddToSee />
+					<BtnAddSee />
 				</Bottom>
 			</Right>
-		</Card>
-	);
-}
+		)
+	} else {
+		return <></>
+	}
+} 
 
 const Card = styled.div`
 	width: 50rem;
@@ -71,11 +98,13 @@ const Card = styled.div`
 
 const Poster = styled.img`
 	height: 100%;
+	width: 100%;
 `
 
 const Right = styled.div`
 	flex-shrink: 1;
 	min-width: 30%;
+	width: 100%;
 	display: flex;
 	justify-content: space-between;
 	flex-flow: column nowrap;

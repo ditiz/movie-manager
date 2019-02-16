@@ -4,34 +4,40 @@ import styled from 'styled-components'
 import { CardMovie } from '../component/cards'
 import { Loader } from '../component/loader'
 
-class Movie extends Component {
+class MovieToSee extends Component {
 
 	state = {
 		ready: false,
 		error: '',
-		movie: {}
+		movies: []
 	}
 
 	componentDidMount() {
-		let imdbId = this.props.match.params.imdbId;
-		let url = server + "api/movies/imdbID/" + imdbId
+		let url = server + "api/movies/toSee"
 
 		fetch(url)
 		.then(res => res.json())
 		.then(res => {
-			if (res != null) {
-				let movie = {
-					title: res.name,
-					year: res.year,
-					director: res.director,
-					plot: res.plot,
-					actors: res.actors.split(','),
-					poster: res.poster,
-					imdbId: res.imdbID
-				}
-				this.setState({ ready: true, movie: movie })
+			if (res) {
+				let movies = res.map(mov => {
+					let movie = {
+						title: mov.m_name,
+						year: mov.m_year,
+						director: mov.m_director,
+						plot: mov.m_plot,
+						actors: mov.m_actors.split(','),
+						poster: mov.m_poster,
+						imdbId: mov.m_imdbID
+					}
+
+					return movie;
+				})
+
+				console.log(movies)
+
+				this.setState({ ready: true, movies: movies })
 			} else {
-				this.setState({ ready: true, error: "la film n'a pas pu être trouvé" })
+				this.setState({ ready: true, error: "Les films n'ont pas pu être récupéré" })
 			}
 		})
 	}
@@ -39,12 +45,12 @@ class Movie extends Component {
 	render() {
 		return (
 			<div>
-				<RenderReady 
-					movie={this.state.movie} 
-					error={this.state.error} 
+				<RenderReady
+					movies={this.state.movies}
+					error={this.state.error}
 					ready={this.state.ready}
 					{...this.props}
-				/> 
+				/>
 			</div>
 		)
 	}
@@ -52,20 +58,23 @@ class Movie extends Component {
 
 
 const RenderReady = (props) => {
+	// console.log(props)
 	if (props.ready) {
-		return <RenderError movie={props.movie} error={props.error} {...props}/>
+		return <RenderError movies={props.movies} error={props.error} {...props} />
 	} else {
-		return <Loader/>
+		return <Loader />
 	}
 }
 
 const RenderError = (props) => {
 	if (props.error.length > 0) {
-		return <Error error={props.error}/>
+		return <Error error={props.error} />
 	} else {
-		return <CardMovie movie={props.movie} {...props}/>
+		return props.movies.map(movie => (
+			<CardMovie key={movie.imdbId} movie={movie} {...props} />
+		))
 	}
-} 
+}
 
 const Error = (props) => (
 	<ErrorDivParent>
@@ -83,7 +92,7 @@ const ErroDivChild = styled.div`
 	background: #212121;
 	color: white;
 	`
-	
+
 const ErrorDivParent = styled.div`
 	display: flex;
 	justify-content: center;
@@ -93,4 +102,4 @@ const ErrorDivParent = styled.div`
 
 const server = "http://127.0.0.1:8000/"
 
-export default Movie
+export default MovieToSee

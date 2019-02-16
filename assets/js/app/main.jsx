@@ -6,7 +6,8 @@ import { NavBar } from './component/header'
 
 import Movie from './page/Movie'
 import Home from './page/Home'
-
+import MovieToSee from './page/MoviesToSee'
+ 
 class Main extends React.Component {
 	render() {
 		return (
@@ -16,7 +17,7 @@ class Main extends React.Component {
 
 					<Switch>
 						<Route exact path='/app' component={Home} />
-						<Route path='/app/toSee' component={Home} />
+						<Route path='/app/toSee' component={MovieToSee} />
 						<Route path='/app/see' component={Home} />
 						<Route path='/app/movie/:imdbId' component={Movie} />
 					</Switch>

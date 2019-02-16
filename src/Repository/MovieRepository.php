@@ -53,6 +53,20 @@ class MovieRepository extends ServiceEntityRepository
             ->getScalarResult();
     }
 
+    /**
+    * @return MovieSee[] Returns an array of MovieSee objects
+    */
+    public function findMovieToSee()
+    {
+        return $this->createQueryBuilder('m')
+            ->innerJoin('App\Entity\MovieToSee', 'mts', 'WITH', 'm.id = mts.movie_id')
+            ->select('m, mts')
+            ->orderBy('m.id', 'ASC')
+            ->groupBy('m.id, mts.id')
+            ->getQuery()
+            ->getScalarResult();
+    }    
+
     /*
     public function findOneBySomeField($value): ?Movie
     {
