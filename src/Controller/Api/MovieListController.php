@@ -45,4 +45,12 @@ class MovieListController extends AbstractController
 
         return $this->json($movies);
     }
+
+    public function see() {
+        $movies = $this->getDoctrine()
+            ->getRepository(Movie::class)
+            ->findMovieSee();
+
+        return $this->json($movies);
+    }
 }

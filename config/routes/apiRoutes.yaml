@@ -15,3 +15,7 @@ apiListMovie:
 apiListMovieToSee:
     path: /movies/toSee
     controller: App\Controller\Api\MovieListController::toSee
+
+apiListMovieSee:
+    path: /movies/see
+    controller: App\Controller\Api\MovieListController::see

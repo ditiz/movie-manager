@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { CardMovie } from '../component/cards'
 import { Loader } from '../component/loader'
 
-class MovieToSee extends Component {
+class MovieList extends Component {
 
 	state = {
 		ready: false,
@@ -13,33 +13,41 @@ class MovieToSee extends Component {
 	}
 
 	componentDidMount() {
-		let url = server + "api/movies/toSee"
+		this.getMovies()
+	}
+
+	getMovies() {
+		let url = ''
+
+		if (this.props.location.pathname == '/app/toSee') {
+			url = server + "api/movies/toSee"
+		} else {
+			url = server + "api/movies/see"
+		}
 
 		fetch(url)
-		.then(res => res.json())
-		.then(res => {
-			if (res) {
-				let movies = res.map(mov => {
-					let movie = {
-						title: mov.m_name,
-						year: mov.m_year,
-						director: mov.m_director,
-						plot: mov.m_plot,
-						actors: mov.m_actors.split(','),
-						poster: mov.m_poster,
-						imdbId: mov.m_imdbID
-					}
+			.then(res => res.json())
+			.then(res => {
+				if (res) {
+					let movies = res.map(mov => {
+						let movie = {
+							title: mov.m_name,
+							year: mov.m_year,
+							director: mov.m_director,
+							plot: mov.m_plot,
+							actors: mov.m_actors.split(','),
+							poster: mov.m_poster,
+							imdbId: mov.m_imdbID
+						}
 
-					return movie;
-				})
+						return movie;
+					})
 
-				console.log(movies)
-
-				this.setState({ ready: true, movies: movies })
-			} else {
-				this.setState({ ready: true, error: "Les films n'ont pas pu être récupéré" })
-			}
-		})
+					this.setState({ ready: true, movies: movies })
+				} else {
+					this.setState({ ready: true, error: "Les films n'ont pas pu être récupéré" })
+				}
+			})
 	}
 
 	render() {
@@ -58,7 +66,6 @@ class MovieToSee extends Component {
 
 
 const RenderReady = (props) => {
-	// console.log(props)
 	if (props.ready) {
 		return <RenderError movies={props.movies} error={props.error} {...props} />
 	} else {
@@ -102,4 +109,4 @@ const ErrorDivParent = styled.div`
 
 const server = "http://127.0.0.1:8000/"
 
-export default MovieToSee
+export default MovieList

@@ -59,7 +59,22 @@ class MovieRepository extends ServiceEntityRepository
     public function findMovieToSee()
     {
         return $this->createQueryBuilder('m')
-            ->innerJoin('App\Entity\MovieToSee', 'mts', 'WITH', 'm.id = mts.movie_id')
+            ->innerJoin('App\Entity\MovieToSee', 'ms', 'WITH', 'm.id = ms.movie_id')
+            ->select('m, ms')
+            ->orderBy('m.id', 'ASC')
+            ->groupBy('m.id, ms.id')
+            ->getQuery()
+            ->getScalarResult();
+    }    
+
+
+    /**
+    * @return MovieSee[] Returns an array of MovieSee objects
+    */
+    public function findMovieSee()
+    {
+        return $this->createQueryBuilder('m')
+            ->innerJoin('App\Entity\MovieSee', 'mts', 'WITH', 'm.id = mts.movie_id')
             ->select('m, mts')
             ->orderBy('m.id', 'ASC')
             ->groupBy('m.id, mts.id')

@@ -6,10 +6,14 @@ import { Link } from "react-router-dom";
 export const NavBar = (props) => {
 	return (
 		<Header className="develop-toolbar__row mdc-toolbar__row">
-			<Link to='/app/toSee'>
+			<Link to='/app'>
+				Logo
+			</Link>
+
+			<Link className='link' to='/app/toSee'>
 				Film à voir
 						</Link>
-			<Link to='/app/see'>
+			<Link className='link' to='/app/see'>
 				Film vu
 			</Link>
 
@@ -24,22 +28,25 @@ export const NavBar = (props) => {
 }
 
 export const Header = styled.header`
-background: #000;
-color: #FFF;
-font-size: 1.3rem;
-padding: .375rem .75rem;
-
-a {
+	background: #000;
 	color: #FFF;
-	text-decoration: none;
+	font-size: 1.3rem;
 	padding: .375rem .75rem;
-	transition: all .2s;
-	height: 100%;
 
-	&:hover {
-		background: var(--mdc-theme-primary);
+	a {
+		color: #FFF;
+		text-decoration: none;
+		padding: .375rem .75rem;
+		height: 100%;
+
+		&.link {
+			transition: all .2s;
+
+			&:hover {
+				background: var(--mdc-theme-primary);
+			}
+		}
 	}
-}
 `
 
 export const Search = styled.div`
