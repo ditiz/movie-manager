@@ -7,12 +7,28 @@ import { serverName } from '../server'
 class Home extends Component {
 
 	state = {
-		lastMovieToSee: {},
-		lastMovieSee: {}
+		lastMovieToSee: {
+			title: '',
+			year: '',
+			director: '',
+			plot: '',
+			actors: [],
+			poster: '',
+			imdbId: ''
+		},
+		lastMovieSee: {
+			title: '',
+			year: '',
+			director: '',
+			plot: '',
+			actors: [],
+			poster: '',
+			imdbId: ''
+		}
 	}
 
 	componentDidMount() {
-		fetch(serverName + 'api/movies/last')
+		fetch( 'api/movies/last')
 		.then(res => res.json())
 		.then(res => {
 			if (res != null) {
@@ -45,14 +61,16 @@ class Home extends Component {
 	}
 
 	render() {
+		console.log(this.state.lastMovieToSee);
 		return (
 			<BoxParent>
 				<Box>
 					<Title>Dernier film ajouté à voir</Title>
-					
+					<Poster src={this.state.lastMovieToSee.poster} alt='poster'/>
 				</Box>
 				<Box>
 					<Title>Dernier film vu</Title>
+					<Poster src={this.state.lastMovieSee.poster} alt='poster' />
 				</Box>
 			</BoxParent>
 		)
@@ -93,6 +111,12 @@ const BoxParent = styled.div`
 
 const Title = styled.h2`
 	color: white;
+`
+
+const Poster = styled.img`
+	width: 18rem;
+	height: auto;
+	margin: auto;
 `
 
 export default Home
