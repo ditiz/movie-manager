@@ -65,36 +65,48 @@ class MovieWatchingController extends AbstractController
         $movies = $request->get('movies');
 
         $imdbIDList = array_keys($movies);
+        $databaseMoviesInfos = [];
 
-        $databaseMoviesInfos = $this->getDoctrine()
-            ->getRepository(Movie::class)
-            ->findMovieWithWatchingByImdbIDs($imdbIDList);
+        foreach ($imdbIDList as $imdbID) {
+            $movie = $this->getDoctrine()
+                ->getRepository(Movie::class)
+                ->findMovieWithWatchingByImdbIDs([$imdbID]);
+            
+            if (!$movie) {
+                $movie = $this->omdb->getMovieByImdbID($imdbID);
+            }
 
+            $databaseMoviesInfos[$movie[0]['m_imdbID']] = $movie[0];
+        }
+        
         $entityManager = $this->getDoctrine()->getManager();
-
+        
         foreach ($databaseMoviesInfos as $movieInfos) {
             //Manage MovieToSee
             if (isset($movies[$movieInfos['m_imdbID']]['to_see'])) {
                 if ($movieInfos['mts_to_see'] == 0 || $movieInfos['mts_to_see'] == null) {
-                    $this->manageToSee($movieInfos['m_imdbID'], 1);
+                    $movieToSee = $this->manageToSee($movieInfos['m_imdbID'], 1);
+                    $entityManager->persist($movieToSee);
                 }
             } else {
                 if ($movieInfos['mts_to_see'] != 0 || $movieInfos['mts_to_see'] != null) {
-                    $this->manageToSee($movieInfos['m_imdbID'], 0);
+                    $movieToSee = $this->manageToSee($movieInfos['m_imdbID'], 0);
+                    $entityManager->persist($movieToSee);
                 }
             }
-
+            
             //Manage MovieSee
             if (isset($movies[$movieInfos['m_imdbID']]['see'])) {
                 if ($movieInfos['ms_see'] == 0 || $movieInfos['ms_see'] == null) {
-                    $this->manageSee($movieInfos['m_imdbID'], 1);
+                    $movieSee = $this->manageSee($movieInfos['m_imdbID'], 1);
+                    $entityManager->persist($movieSee);
                 }
             } else {
                 if ($movieInfos['ms_see'] != 0 || $movieInfos['ms_see'] != null) {
-                    $this->manageSee($movieInfos['m_imdbID'], 0);
+                    $movieSee = $this->manageSee($movieInfos['m_imdbID'], 0);
+                    $entityManager->persist($movieSee);
                 }
-            }
-
+            } 
         }
 
         $entityManager->flush();
