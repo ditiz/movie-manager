@@ -74,13 +74,41 @@ class MovieRepository extends ServiceEntityRepository
     public function findMovieSee()
     {
         return $this->createQueryBuilder('m')
-            ->innerJoin('App\Entity\MovieSee', 'mts', 'WITH', 'm.id = mts.movie_id')
-            ->select('m, mts')
+            ->innerJoin('App\Entity\MovieSee', 'ms', 'WITH', 'm.id = ms.movie_id')
+            ->select('m, ms')
             ->orderBy('m.id', 'ASC')
-            ->groupBy('m.id, mts.id')
+            ->groupBy('m.id, ms.id')
             ->getQuery()
             ->getScalarResult();
-    }    
+    }  
+    
+    /**
+    * @return MovieSee[] Returns an array of MovieSee objects
+    */
+    public function findLastMovieToSeeAndSee()
+    {
+        $movies['toSee'] = $this->createQueryBuilder('m')
+            ->innerJoin('App\Entity\MovieToSee', 'mts', 'WITH', 'm.id = mts.movie_id')
+            ->select('m')
+            ->orderBy('m.id', 'ASC')
+            ->groupBy('m.id, mts.id')
+            ->orderBy('mts.id', 'Desc')
+            ->setmaxResults(1)
+            ->getQuery()
+            ->getScalarResult();
+
+         $movies['see'] = $this->createQueryBuilder('m')
+            ->innerJoin('App\Entity\MovieSee', 'ms', 'WITH', 'm.id = ms.movie_id')
+            ->select('m')
+            ->orderBy('m.id', 'ASC')
+            ->groupBy('m.id, ms.id')
+            ->orderBy('ms.id', 'Desc')
+            ->setmaxResults(1)
+            ->getQuery()
+            ->getScalarResult();
+
+        return $movies;
+    }  
 
     /*
     public function findOneBySomeField($value): ?Movie

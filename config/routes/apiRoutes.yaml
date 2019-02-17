@@ -19,3 +19,7 @@ apiListMovieToSee:
 apiListMovieSee:
     path: /movies/see
     controller: App\Controller\Api\MovieListController::see
+
+apiLastMovieToSeeAndSee:
+    path: /movies/last
+    controller: App\Controller\Api\MovieListController::lastToSeeAndSee

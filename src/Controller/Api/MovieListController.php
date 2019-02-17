@@ -53,4 +53,12 @@ class MovieListController extends AbstractController
 
         return $this->json($movies);
     }
+
+    public function lastToSeeAndSee() {
+        $movies = $this->getDoctrine()
+            ->getRepository(Movie::class)
+            ->findLastMovieToSeeAndSee();
+
+        return $this->json($movies);
+    }
 }
