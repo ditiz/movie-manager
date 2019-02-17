@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom' 
 
 import { serverName } from '../server'
+import { Loader } from '../component/loader'
 
 class Home extends Component {
 
@@ -24,7 +25,8 @@ class Home extends Component {
 			actors: [],
 			poster: '',
 			imdbId: ''
-		}
+		},
+		ready: false
 	}
 
 	componentDidMount() {
@@ -54,26 +56,38 @@ class Home extends Component {
 
 				this.setState({ 
 					lastMovieToSee: lastMovieToSee, 
-					lastMovieSee: lastMovieSee
+					lastMovieSee: lastMovieSee,
+					ready: true
 				})
 			}
 		})
 	}
 
 	render() {
-		console.log(this.state.lastMovieToSee);
-		return (
-			<BoxParent>
-				<Box>
-					<Title>Dernier film ajouté à voir</Title>
-					<Poster src={this.state.lastMovieToSee.poster} alt='poster'/>
-				</Box>
-				<Box>
-					<Title>Dernier film vu</Title>
-					<Poster src={this.state.lastMovieSee.poster} alt='poster' />
-				</Box>
-			</BoxParent>
-		)
+		if  (this.state.ready) {
+			return (
+				<BoxParent>
+					<Box>
+						<Link to={'app/movie/' + this.state.lastMovieToSee.imdbId}>
+							<Head>Dernier film ajouté à voir</Head>
+							<Title>{this.state.lastMovieToSee.title}</Title>
+							<Poster src={this.state.lastMovieToSee.poster} alt='poster' />
+						</Link>
+						<Btn className="mdc-button">Vu</Btn>
+					</Box>
+					<Box>
+						<Link to={'app/movie/' + this.state.lastMovieSee.imdbId}>
+							<Head>Dernier film vu</Head>
+							<Title>{this.state.lastMovieSee.title}</Title>
+							<Poster src={this.state.lastMovieSee.poster} alt='poster' />
+						</Link>
+						<Btn className="mdc-button">Revoir</Btn>
+					</Box>
+				</BoxParent>
+			)
+		} else {
+			return <Loader/>
+		}
 	}
 }
 
@@ -85,17 +99,21 @@ const Box = (props) => (
 
 const BoxCss = styled.div`
 	width: 30rem;
-	height: 35rem;
+	max-height: 36rem;
 	background: #212121;
 	color: #FFF;
 	display: flex;
-	justify-content: space-between;
 	flex-flow: column nowrap;
+	justify-content: space-between
 	text-align: center;
 	font-family: Roboto;
 	margin: 2rem auto;
 	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 	font-size: 1rem;
+
+	* {
+		margin: .3rem;
+	} 
 
   	&:hover {
 		box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)
@@ -107,16 +125,30 @@ const BoxParent = styled.div`
 	justify-content: space-evenly;;
 	flex-flow: wrap row;
 	width: 100%;
+
+	a {
+		text-decoration:none
+	}
 `
 
-const Title = styled.h2`
+const Title = styled.p`
 	color: white;
+	text-decoration: none;
 `
 
 const Poster = styled.img`
-	width: 18rem;
 	height: auto;
 	margin: auto;
+	flex: 18rem;
+	padding: .3rem;
 `
 
+const Head = styled.h2`
+	color: white;
+	text-decoration: none;
+`
+
+const Btn = styled.button`
+	min-height: 2rem;
+`
 export default Home
