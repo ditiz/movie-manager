@@ -95,7 +95,7 @@ class MovieRepository extends ServiceEntityRepository
             ->orderBy('mts.id', 'Desc')
             ->setmaxResults(1)
             ->getQuery()
-            ->getScalarResult();
+            ->getOneOrNullResult();
 
          $movies['see'] = $this->createQueryBuilder('m')
             ->innerJoin('App\Entity\MovieSee', 'ms', 'WITH', 'm.id = ms.movie_id')
@@ -105,7 +105,7 @@ class MovieRepository extends ServiceEntityRepository
             ->orderBy('ms.id', 'Desc')
             ->setmaxResults(1)
             ->getQuery()
-            ->getScalarResult();
+            ->getOneOrNullResult();
 
         return $movies;
     }  

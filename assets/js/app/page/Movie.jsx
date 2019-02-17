@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
+import { serverName } from '../server'
 import { CardMovie } from '../component/cards'
 import { Loader } from '../component/loader'
 
@@ -14,7 +15,7 @@ class Movie extends Component {
 
 	componentDidMount() {
 		let imdbId = this.props.match.params.imdbId;
-		let url = server + "api/movies/imdbID/" + imdbId
+		let url = serverName + "api/movies/imdbID/" + imdbId
 
 		fetch(url)
 		.then(res => res.json())
@@ -90,7 +91,5 @@ const ErrorDivParent = styled.div`
 	flex-flow: wrap column;
 	height:100%;
 `
-
-const server = "http://127.0.0.1:8000/"
 
 export default Movie

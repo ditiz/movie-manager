@@ -2,12 +2,54 @@ import React, { Component } from 'react'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom' 
 
+import { serverName } from '../server'
+
 class Home extends Component {
+
+	state = {
+		lastMovieToSee: {},
+		lastMovieSee: {}
+	}
+
+	componentDidMount() {
+		fetch(serverName + 'api/movies/last')
+		.then(res => res.json())
+		.then(res => {
+			if (res != null) {
+				let lastMovieToSee = {
+					title: res.toSee.name,
+					year: res.toSee.year,
+					director: res.toSee.director,
+					plot: res.toSee.plot,
+					actors: res.toSee.actors.split(','),
+					poster: res.toSee.poster,
+					imdbId: res.toSee.imdbID
+				}
+
+				let lastMovieSee = {
+					title: res.see.name,
+					year: res.see.year,
+					director: res.see.director,
+					plot: res.see.plot,
+					actors: res.see.actors.split(','),
+					poster: res.see.poster,
+					imdbId: res.see.imdbID
+				}
+
+				this.setState({ 
+					lastMovieToSee: lastMovieToSee, 
+					lastMovieSee: lastMovieSee
+				})
+			}
+		})
+	}
+
 	render() {
 		return (
 			<BoxParent>
 				<Box>
 					<Title>Dernier film ajouté à voir</Title>
+					
 				</Box>
 				<Box>
 					<Title>Dernier film vu</Title>

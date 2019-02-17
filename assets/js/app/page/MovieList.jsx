@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
+import { serverName } from '../server'
 import { CardMovie } from '../component/cards'
 import { Loader } from '../component/loader'
 
@@ -20,9 +21,9 @@ class MovieList extends Component {
 		let url = ''
 
 		if (this.props.location.pathname == '/app/toSee') {
-			url = server + "api/movies/toSee"
+			url = serverName + "api/movies/toSee"
 		} else {
-			url = server + "api/movies/see"
+			url = serverName + "api/movies/see"
 		}
 
 		fetch(url)
@@ -106,7 +107,5 @@ const ErrorDivParent = styled.div`
 	flex-flow: wrap column;
 	height:100%;
 `
-
-const server = "http://127.0.0.1:8000/"
 
 export default MovieList
