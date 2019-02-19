@@ -141,6 +141,7 @@ const Poster = styled.img`
 	margin: auto;
 	flex: 18rem;
 	padding: .3rem;
+	max-height: 27.8rem;
 `
 
 const Head = styled.h2`

@@ -42,7 +42,7 @@ class ManageOmdbApi extends AbstractController
         if(isset($data_movie['DVD'])) {
             $date_DVD = date('Y-m-d H:i:s', strtotime($data_movie['DVD']));
         } else {
-            $date_DVD = '00-00-0000 00:00:00';
+            $date_DVD = date('Y-m-d H:i:s', 0);
         }
         $movie->setDVD($date_DVD);
 

@@ -68,17 +68,22 @@ class MovieWatchingController extends AbstractController
         $databaseMoviesInfos = [];
 
         foreach ($imdbIDList as $imdbID) {
+            $index = 'm_imdbID';
             $movie = $this->getDoctrine()
                 ->getRepository(Movie::class)
                 ->findMovieWithWatchingByImdbIDs([$imdbID]);
-            
+ 
             if (!$movie) {
                 $movie = $this->omdb->getMovieByImdbID($imdbID);
+                 $movie = $this->getDoctrine()
+                ->getRepository(Movie::class)
+                ->findMovieWithWatchingByImdbIDs([$imdbID]);
             }
 
-            $databaseMoviesInfos[$movie[0]['m_imdbID']] = $movie[0];
+            $movie = $movie[0];
+            $databaseMoviesInfos[$movie[$index]] = $movie;
         }
-        
+            
         $entityManager = $this->getDoctrine()->getManager();
         
         foreach ($databaseMoviesInfos as $movieInfos) {
