@@ -63,6 +63,15 @@ class Home extends Component {
 		})
 	}
 
+	handleClickReSee = () => {
+		let url = '/api/movies/toSee/' + this.state.lastMovieSee.imdbId
+		fetch(url)
+			.then(res => res.json())
+			.then(res => {
+				console.log(res)
+			})
+	} 
+
 	render() {
 		if  (this.state.ready) {
 			return (
@@ -81,7 +90,9 @@ class Home extends Component {
 							<Title>{this.state.lastMovieSee.title}</Title>
 							<Poster src={this.state.lastMovieSee.poster} alt='poster' />
 						</Link>
-						<Btn className="mdc-button">Revoir</Btn>
+						<Btn className="mdc-button" onClick={this.handleClickReSee}>
+							Revoir
+						</Btn>
 					</Box>
 				</BoxParent>
 			)

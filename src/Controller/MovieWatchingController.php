@@ -75,9 +75,9 @@ class MovieWatchingController extends AbstractController
  
             if (!$movie) {
                 $movie = $this->omdb->getMovieByImdbID($imdbID);
-                 $movie = $this->getDoctrine()
-                ->getRepository(Movie::class)
-                ->findMovieWithWatchingByImdbIDs([$imdbID]);
+                $movie = $this->getDoctrine()
+                    ->getRepository(Movie::class)
+                    ->findMovieWithWatchingByImdbIDs([$imdbID]);
             }
 
             $movie = $movie[0];
@@ -125,7 +125,7 @@ class MovieWatchingController extends AbstractController
 		return new Response($response);
     }
 
-    private function manageToSee($imdbID, $status) 
+    public function manageToSee($imdbID, $status) 
     {
         $MovieToSee = $this->getDoctrine()
             ->getRepository(MovieToSee::class)
@@ -161,5 +161,19 @@ class MovieWatchingController extends AbstractController
         $MovieSee->setMovieId($movieFromDatabase->getId());
 
         return $MovieSee;
+    }
+
+    public function inverseToSeeStatus($imdbID) {
+        $MovieToSee = $this->getDoctrine()
+            ->getRepository(MovieToSee::class)
+            ->findOneBy(['imdbID' => $imdbID]);
+
+        if (!$MovieToSee) {
+            $status = 1;
+        } else {
+            $status = !$MovieToSee->status;
+        }
+
+        return $this->manageToSee($imdbID, $status);
     }
 }

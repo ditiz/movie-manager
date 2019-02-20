@@ -8,9 +8,17 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Movie;
 use App\Entity\MovieSee;
 use App\Entity\MovieToSee;
+use App\Controller\ManageOmdbApi;
+use App\Controller\MovieWatchingController;
 
 class MovieListController extends AbstractController
 {
+    public function __construct(ManageOmdbApi $omdb, MovieWatchingController $watching) {
+        $this->omdb = $omdb;
+        $this->watching = $watching;
+    }
+
+
 	public function index()
     {
         $movies = $this->getDoctrine()
@@ -60,5 +68,19 @@ class MovieListController extends AbstractController
             ->findLastMovieToSeeAndSee();
 
         return $this->json($movies);
+    }
+
+    public function editToSeeStatus($imdbID) {
+        $movie = $this->getDoctrine()
+            ->getRepository(Movie::class)
+            ->findOneBy(['imdbID' => $imdbID]);
+        
+        if (!$movie) {
+            //we save the movie in database 
+            $this->omdb->getMovieByImdbID($imdbID);
+        }
+
+        $this->watching->inverseToSeeStatus($imdbID);
+        return $this->json(true);
     }
 }
