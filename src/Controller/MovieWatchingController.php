@@ -177,7 +177,7 @@ class MovieWatchingController extends AbstractController
             $status = !$MovieToSee->status;
         }
 
-        $this->manageToSee($imdbID, $status);
+        $MovieToSee = $this->manageToSee($imdbID, $status);
         $entityManager->persist($MovieToSee);
         $entityManager->flush();
 
