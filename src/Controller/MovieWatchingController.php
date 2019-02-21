@@ -165,6 +165,8 @@ class MovieWatchingController extends AbstractController
 
     public function inverseToSeeStatus($imdbID) 
     {
+        $entityManager = $this->getDoctrine()->getManager();
+        
         $MovieToSee = $this->getDoctrine()
             ->getRepository(MovieToSee::class)
             ->findOneBy(['imdbID' => $imdbID]);
@@ -175,7 +177,11 @@ class MovieWatchingController extends AbstractController
             $status = !$MovieToSee->status;
         }
 
-        return $this->manageToSee($imdbID, $status);
+        $this->manageToSee($imdbID, $status);
+        $entityManager->persist($MovieSee);
+        $entityManager->flush();
+
+        return true;
     }
 
     public function inverseSeeStatus($imdbID) 
@@ -196,5 +202,7 @@ class MovieWatchingController extends AbstractController
 
         $entityManager->persist($MovieSee);
         $entityManager->flush();
+
+        return true;
     }
 }
