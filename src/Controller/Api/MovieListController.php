@@ -83,4 +83,18 @@ class MovieListController extends AbstractController
         $this->watching->inverseToSeeStatus($imdbID);
         return $this->json(true);
     }
+
+    public function editSeeStatus($imdbID) {
+        $movie = $this->getDoctrine()
+            ->getRepository(Movie::class)
+            ->findOneBy(['imdbID' => $imdbID]);
+        
+        if (!$movie) {
+            //we save the movie in database 
+            $this->omdb->getMovieByImdbID($imdbID);
+        }
+
+        $this->watching->inverseSeeStatus($imdbID);
+        return $this->json(true);
+    }
 }

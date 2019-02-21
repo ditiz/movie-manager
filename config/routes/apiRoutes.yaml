@@ -27,3 +27,7 @@ apiLastMovieToSeeAndSee:
 apiEditToSeeStatus: 
     path: /movies/toSee/{imdbID}
     controller: App\Controller\Api\MovieListController::editToSeeStatus
+
+apiEditSeeStatus: 
+    path: /movies/see/{imdbID}
+    controller: App\Controller\Api\MovieListController:editSeeStatus

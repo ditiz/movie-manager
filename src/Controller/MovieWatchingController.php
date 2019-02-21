@@ -163,7 +163,8 @@ class MovieWatchingController extends AbstractController
         return $MovieSee;
     }
 
-    public function inverseToSeeStatus($imdbID) {
+    public function inverseToSeeStatus($imdbID) 
+    {
         $MovieToSee = $this->getDoctrine()
             ->getRepository(MovieToSee::class)
             ->findOneBy(['imdbID' => $imdbID]);
@@ -175,5 +176,25 @@ class MovieWatchingController extends AbstractController
         }
 
         return $this->manageToSee($imdbID, $status);
+    }
+
+    public function inverseSeeStatus($imdbID) 
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $MovieSee = $this->getDoctrine()
+        ->getRepository(MovieSee::class)
+        ->findOneBy(['imdbID' => $imdbID]);
+        
+        if (!$MovieSee) {
+            $status = 1;
+        } else {
+            $status = !$MovieSee->status;
+        }
+        
+        $MovieSee = $this->manageSee($imdbID, $status);
+
+        $entityManager->persist($MovieSee);
+        $entityManager->flush();
     }
 }
