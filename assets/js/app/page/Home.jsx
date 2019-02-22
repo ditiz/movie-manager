@@ -33,8 +33,12 @@ class Home extends Component {
 		fetch( 'api/movies/last')
 		.then(res => res.json())
 		.then(res => {
-			if (res != null) {
-				let lastMovieToSee = {
+
+			let lastMovieToSee = this.state.lastMovieToSee,
+				lastMovieSee   = this.state.lastMovieSee 
+
+			if (res.tooSee != null) {
+				lastMovieToSee = {
 					title: res.toSee.name,
 					year: res.toSee.year,
 					director: res.toSee.director,
@@ -43,8 +47,10 @@ class Home extends Component {
 					poster: res.toSee.poster,
 					imdbId: res.toSee.imdbID
 				}
+			}
 
-				let lastMovieSee = {
+			if (res.see != null) {
+				lastMovieSee = {
 					title: res.see.name,
 					year: res.see.year,
 					director: res.see.director,
@@ -53,23 +59,23 @@ class Home extends Component {
 					poster: res.see.poster,
 					imdbId: res.see.imdbID
 				}
-
-				this.setState({ 
-					lastMovieToSee: lastMovieToSee, 
-					lastMovieSee: lastMovieSee,
-					ready: true
-				})
 			}
+
+			this.setState({ 
+				lastMovieToSee: lastMovieToSee, 
+				lastMovieSee: lastMovieSee,
+				ready: true
+			})
 		})
 	}
 
 	handleClickReSee = () => {
 		let url = '/api/movies/toSee/' + this.state.lastMovieSee.imdbId
 		fetch(url)
-			.then(res => res.json())
-			.then(res => {
-				console.log(res)
-			})
+		.then(res => res.json())
+		.then(res => {
+			console.log(res)
+		})
 	} 
 
 	render() {
