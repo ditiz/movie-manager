@@ -7,6 +7,9 @@ import { Loader } from '../component/loader'
 
 class Home extends Component {
 
+	refToSee = React.createRef();
+	refSee = React.createRef()
+
 	state = {
 		lastMovieToSee: {
 			title: '',
@@ -34,10 +37,10 @@ class Home extends Component {
 		.then(res => res.json())
 		.then(res => {
 
-			let lastMovieToSee = this.state.lastMovieToSee,
-				lastMovieSee   = this.state.lastMovieSee 
+			let lastMovieToSee = this.state.lastMovieToSee
+			let lastMovieSee   = this.state.lastMovieSee 
 
-			if (res.tooSee != null) {
+			if (res.toSee != null) {
 				lastMovieToSee = {
 					title: res.toSee.name,
 					year: res.toSee.year,
@@ -61,20 +64,35 @@ class Home extends Component {
 				}
 			}
 
+			console.log()
+
 			this.setState({ 
 				lastMovieToSee: lastMovieToSee, 
 				lastMovieSee: lastMovieSee,
 				ready: true
 			})
+			console.log(res)
 		})
 	}
 
-	handleClickReSee = () => {
-		let url = '/api/movies/toSee/' + this.state.lastMovieSee.imdbId
+	handleClickSeen = () => {
+		let url = '/api/movies/see/' + this.state.lastMovieSee.imdbId
+
 		fetch(url)
 		.then(res => res.json())
 		.then(res => {
-			console.log(res)
+			this.refToSee.current.classList.add('mdc-button--outlined')
+		})
+	}
+	
+	handleClickReSee = () => {
+		let url = '/api/movies/toSee/' + this.state.lastMovieSee.imdbId
+		console.log(this.state)
+		console.log(url)
+		fetch(url)
+		.then(res => res.json())
+		.then(res => {
+			this.refSee.current.classList.add('mdc-button--outlined')
 		})
 	} 
 
@@ -88,7 +106,9 @@ class Home extends Component {
 							<Title>{this.state.lastMovieToSee.title}</Title>
 							<Poster src={this.state.lastMovieToSee.poster} alt='poster' />
 						</Link>
-						<Btn className="mdc-button">Vu</Btn>
+						<Btn className="mdc-button" ref={this.refToSee} onClick={this.handleClickSeen}>
+							Vu
+						</Btn>
 					</Box>
 					<Box>
 						<Link to={'app/movie/' + this.state.lastMovieSee.imdbId}>
@@ -96,7 +116,7 @@ class Home extends Component {
 							<Title>{this.state.lastMovieSee.title}</Title>
 							<Poster src={this.state.lastMovieSee.poster} alt='poster' />
 						</Link>
-						<Btn className="mdc-button" onClick={this.handleClickReSee}>
+						<Btn className="mdc-button" ref={this.refSee} onClick={this.handleClickReSee}>
 							Revoir
 						</Btn>
 					</Box>

@@ -174,7 +174,7 @@ class MovieWatchingController extends AbstractController
         if (!$MovieToSee) {
             $status = 1;
         } else {
-            $status = !$MovieToSee->status;
+            $status = !$MovieToSee->getToSee();
         }
 
         $MovieToSee = $this->manageToSee($imdbID, $status);
@@ -195,7 +195,7 @@ class MovieWatchingController extends AbstractController
         if (!$MovieSee) {
             $status = 1;
         } else {
-            $status = !$MovieSee->status;
+            $status = !$MovieSee->getSee();
         }
         
         $MovieSee = $this->manageSee($imdbID, $status);
