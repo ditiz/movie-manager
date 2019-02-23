@@ -41,8 +41,8 @@ class Home extends Component {
 			.then(res => res.json())
 			.then(res => {
 
-				let lastMovieToSee = this.state.lastMovieToSee
-				let lastMovieSee = this.state.lastMovieSee
+				let lastMovieToSee = {}
+				let lastMovieSee = {}
 
 				if (res.toSee != null) {
 					lastMovieToSee = {
@@ -54,7 +54,7 @@ class Home extends Component {
 						poster: res.toSee.poster,
 						imdbId: res.toSee.imdbID
 					}
-				}
+				} 
 
 				if (res.see != null) {
 					lastMovieSee = {
@@ -77,8 +77,8 @@ class Home extends Component {
 	}
 
 	handleClickSeen = () => {
-		let url = '/api/movies/see/' + this.state.lastMovieToSee.imdbId
-		console.log(url)
+		let url = '/api/movies/toSee/' + this.state.lastMovieToSee.imdbId + '/seen'
+
 		fetch(url)
 		.then(res => res.json())
 		.then(res => {
@@ -89,9 +89,8 @@ class Home extends Component {
 	}
 	
 	handleClickReSee = () => {
-		let url = '/api/movies/toSee/' + this.state.lastMovieSee.imdbId
-		console.log(this.state)
-		console.log(url)
+		let url = '/api/movies/see/' + this.state.lastMovieSee.imdbId + '/seeAgain'
+
 		fetch(url)
 		.then(res => res.json())
 		.then(res => {
