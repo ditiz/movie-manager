@@ -93,6 +93,7 @@ class MovieRepository extends ServiceEntityRepository
             ->orderBy('m.id', 'ASC')
             ->groupBy('m.id, mts.id')
             ->orderBy('mts.id', 'Desc')
+            ->where('mts.to_see = 1')
             ->setmaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
@@ -103,12 +104,27 @@ class MovieRepository extends ServiceEntityRepository
             ->orderBy('m.id', 'ASC')
             ->groupBy('m.id, ms.id')
             ->orderBy('ms.id', 'Desc')
+            ->where('ms.see = 1')
             ->setmaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
 
         return $movies;
-    }  
+    }
+
+    public function findMovieWithWatchingInfo($imdbID) 
+    {
+        return $this->createQueryBuilder('m')
+            ->leftJoin('App\Entity\MovieToSee', 'mts', 'WITH', 'm.id = mts.movie_id')
+            ->leftJoin('App\Entity\MovieSee', 'ms', 'WITH', 'm.id = ms.movie_id')
+            ->where('m.imdbID = :imdbID')
+            ->setParameter('imdbID', $imdbID)
+            ->select('m, mts, ms')
+            ->orderBy('m.id', 'ASC')
+            ->groupBy('m.id, mts.id, ms.id')
+            ->getQuery()
+            ->getResult();
+    }
 
     /*
     public function findOneBySomeField($value): ?Movie
