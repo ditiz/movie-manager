@@ -108,17 +108,48 @@ class MovieListController extends AbstractController
             return $this->json(false);
         }
 
+        $movie_to_see->setToSee(0);
+
         if (!$movie_see) {
             $movie_see = new MovieSee();
 
             $movie_see->setImdbId($imdbID)
-                ->setMovieId($movie->getId())
-                ->setSee(1);
-        } else {
-            $movie_see->setSee(1);
+                ->setMovieId($movie->getId());
         }
 
+        $movie_see->setSee(1);
+        
         $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($movie_to_see);
+        $entityManager->persist($movie_see);
+        $entityManager->flush();
+
+        return $this->json(true);
+    } 
+
+    public function seeAgain($imdbID) {
+
+        list($movie, $movie_to_see, $movie_see) = $this->getDoctrine()
+            ->getRepository(Movie::class)
+            ->findMovieWithWatchingInfo($imdbID);
+
+        if (!$movie ||!$movie_see) {
+            return $this->json(false);
+        }
+
+        $movie_see->setSee(0);
+
+        if (!$movie_to_see) {
+            $movie_to_see = new MovieSee();
+
+            $movie_to_see->setImdbId($imdbID)
+                ->setMovieId($movie->getId());
+        }
+
+        $movie_to_see->setToSee(1);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($movie_to_see);
         $entityManager->persist($movie_see);
         $entityManager->flush();
 

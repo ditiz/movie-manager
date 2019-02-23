@@ -35,3 +35,7 @@ apiEditSeeStatus:
 apiSetMovieToSeeSeen:
     path: /movies/toSee/{imdbID}/seen
     controller: App\Controller\Api\MovieListController::setSeen
+
+apiSeeAgain:
+    path: /movies/see/{imdbID}/seeAgain
+    controller: App\Controller\Api\MovieListController::seeAgain
