@@ -82,8 +82,6 @@ class Home extends Component {
 		fetch(url)
 		.then(res => res.json())
 		.then(res => {
-			this.refToSee.current.classList.toggle('mdc-button--outlined')
-			this.refSee.current.classList.remove('mdc-button--outlined')
 			this.fetchLastMovies()
 		})
 	}
@@ -94,8 +92,6 @@ class Home extends Component {
 		fetch(url)
 		.then(res => res.json())
 		.then(res => {
-			this.refSee.current.classList.toggle('mdc-button--outlined')
-			this.refToSee.current.classList.remove('mdc-button--outlined')
 			this.fetchLastMovies()
 		})
 	} 

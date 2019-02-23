@@ -39,3 +39,11 @@ apiSetMovieToSeeSeen:
 apiSeeAgain:
     path: /movies/see/{imdbID}/seeAgain
     controller: App\Controller\Api\MovieListController::seeAgain
+
+apiSearch: 
+    path: /movies/search/{search}
+    controller: App\Controller\Api\MovieListController::search
+
+apiSearchWithPage: 
+    path: /movies/search/{search}/{page}
+    controller: App\Controller\Api\MovieListController::search

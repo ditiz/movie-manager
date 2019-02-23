@@ -64,7 +64,7 @@ class MovieController extends AbstractController
         $search = $search;
         $page = $page;
 
-        $results = $this->searchMovie($search, $page);
+        $results = $this->omdb->searchMovie($search, $page);
 
         if ($results['Response'] == 'False') {
             return $this->render('movie/search.html.twig',[
@@ -85,29 +85,5 @@ class MovieController extends AbstractController
 
             return new Response($response);
         }
-    }
-
-    private function searchMovie($search, int $page = 1) : array
-    {
-        $params = [
-            'apikey' => '92ff3a7a',
-            's' => trim($search),
-            'page' => $page,
-        ];
-
-        $params = '?' . http_build_query($params);
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => 'http://www.omdbapi.com/' . $params
-        ));
-
-        $result = curl_exec($curl);
-
-        curl_close($curl);
-
-        return json_decode($result, true);
     }
 }

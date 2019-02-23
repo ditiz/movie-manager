@@ -154,5 +154,12 @@ class MovieListController extends AbstractController
         $entityManager->flush();
 
         return $this->json(true);
-    } 
+    }
+
+    public function search($search, $page = 1)
+    {
+        $movies = $this->omdb->searchMovie($search, $page);
+
+        return $this->json($movies);
+    }
 }

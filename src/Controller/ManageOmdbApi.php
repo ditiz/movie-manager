@@ -88,4 +88,28 @@ class ManageOmdbApi extends AbstractController
 
         return $movie;
     }
+
+    public function searchMovie(string $search, int $page = 1) : array
+    {
+        $params = [
+            'apikey' => '92ff3a7a',
+            's' => trim($search),
+            'page' => $page,
+        ];
+
+        $params = '?' . http_build_query($params);
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => 'http://www.omdbapi.com/' . $params
+        ));
+
+        $result = curl_exec($curl);
+
+        curl_close($curl);
+
+        return json_decode($result, true);
+    }
 }
