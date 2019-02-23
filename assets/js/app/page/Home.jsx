@@ -77,12 +77,14 @@ class Home extends Component {
 	}
 
 	handleClickSeen = () => {
-		let url = '/api/movies/see/' + this.state.lastMovieSee.imdbId
-
+		let url = '/api/movies/see/' + this.state.lastMovieToSee.imdbId
+		console.log(url)
 		fetch(url)
 		.then(res => res.json())
 		.then(res => {
+			console.log(res);
 			this.refToSee.current.classList.add('mdc-button--outlined')
+			this.fetchLastMovies()
 		})
 	}
 	
