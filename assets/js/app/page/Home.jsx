@@ -33,46 +33,47 @@ class Home extends Component {
 	}
 
 	componentDidMount() {
-		fetch( 'api/movies/last')
-		.then(res => res.json())
-		.then(res => {
+		this.fetchLastMovies()
+	}
 
-			let lastMovieToSee = this.state.lastMovieToSee
-			let lastMovieSee   = this.state.lastMovieSee 
+	fetchLastMovies = () => {
+		fetch('api/movies/last')
+			.then(res => res.json())
+			.then(res => {
 
-			if (res.toSee != null) {
-				lastMovieToSee = {
-					title: res.toSee.name,
-					year: res.toSee.year,
-					director: res.toSee.director,
-					plot: res.toSee.plot,
-					actors: res.toSee.actors.split(','),
-					poster: res.toSee.poster,
-					imdbId: res.toSee.imdbID
+				let lastMovieToSee = this.state.lastMovieToSee
+				let lastMovieSee = this.state.lastMovieSee
+
+				if (res.toSee != null) {
+					lastMovieToSee = {
+						title: res.toSee.name,
+						year: res.toSee.year,
+						director: res.toSee.director,
+						plot: res.toSee.plot,
+						actors: res.toSee.actors.split(','),
+						poster: res.toSee.poster,
+						imdbId: res.toSee.imdbID
+					}
 				}
-			}
 
-			if (res.see != null) {
-				lastMovieSee = {
-					title: res.see.name,
-					year: res.see.year,
-					director: res.see.director,
-					plot: res.see.plot,
-					actors: res.see.actors.split(','),
-					poster: res.see.poster,
-					imdbId: res.see.imdbID
+				if (res.see != null) {
+					lastMovieSee = {
+						title: res.see.name,
+						year: res.see.year,
+						director: res.see.director,
+						plot: res.see.plot,
+						actors: res.see.actors.split(','),
+						poster: res.see.poster,
+						imdbId: res.see.imdbID
+					}
 				}
-			}
 
-			console.log()
-
-			this.setState({ 
-				lastMovieToSee: lastMovieToSee, 
-				lastMovieSee: lastMovieSee,
-				ready: true
+				this.setState({
+					lastMovieToSee: lastMovieToSee,
+					lastMovieSee: lastMovieSee,
+					ready: true
+				})
 			})
-			console.log(res)
-		})
 	}
 
 	handleClickSeen = () => {
@@ -93,6 +94,7 @@ class Home extends Component {
 		.then(res => res.json())
 		.then(res => {
 			this.refSee.current.classList.add('mdc-button--outlined')
+			this.fetchLastMovies()
 		})
 	} 
 
