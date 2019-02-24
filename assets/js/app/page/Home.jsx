@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom' 
 
-import { serverName } from '../server'
 import { Loader } from '../component/loader'
 
 class Home extends Component {
