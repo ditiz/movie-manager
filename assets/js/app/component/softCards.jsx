@@ -39,7 +39,7 @@ function SoftCards({ movie, ...props }) {
 
 
 const Card = styled.div`
-	width: 30rem;
+	width: 20rem;
 	background: #212121;
 	color: #FFF;
 	display: flex;
@@ -67,7 +67,6 @@ const Bottom = styled.div`
 	display: flex;
 	justify-content: space-between;
 	flex-flow: column nowrap;
-	padding: 0 0.875rem;
 
 	& header {
 		text-align: center;
@@ -80,9 +79,9 @@ const Bottom = styled.div`
 
 const Down = styled.div`
 	display: flex;
-	justify-content: flex-end;
+	justify-content: space-around;
 	flex-flow: row nowrap;
-	margin: 5px 0px;
+	margin: .375rem 0px;
 `
 
 export default SoftCards
