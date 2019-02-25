@@ -76,9 +76,13 @@ const Bottom = styled.div`
 
 const Down = styled.div`
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-evenly;
 	flex-flow: row nowrap;
-	margin: .375rem 0px;
+	margin: .375rem .7rem;
+
+	button {
+		margin: 0;
+	}
 `
 
 export default SoftCards
