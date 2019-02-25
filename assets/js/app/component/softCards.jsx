@@ -6,8 +6,6 @@ import { BtnAddToSee, BtnAddSee } from './button'
 function SoftCards({ movie, ...props }) {
 	const [imgReady, setImgReady] = React.useState(false)
 
-	console.log(movie, props)
-
 	const redirectToMovie = () => {
 		console.log("pouet")
 		// props.history.push('/app/movie/' + movie.imdbId)

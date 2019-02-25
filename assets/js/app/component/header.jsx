@@ -12,6 +12,15 @@ class NavBar extends Component {
 		this.props.history.push('/app/movie/search/' + search)
 	}
 
+	handleKeySearch = (e) => {
+		let keyCode = e.keyCode || e.which
+
+		if (keyCode == '13') {
+			this.search()
+			return false
+		}
+	} 
+
 	render() {
 		return (
 			<Header className="develop-toolbar__row mdc-toolbar__row">
@@ -27,7 +36,7 @@ class NavBar extends Component {
 				</Link>
 
 				<Search>
-					<input type="text" ref={this.refSearch}/>
+					<input type="text" ref={this.refSearch} onKeyDown={this.handleKeySearch}/>
 					<button className='mdc-button mdc-button--raised' onClick={this.search}>
 						<i className="material-icons mdc-button__label"><SearchIcon/></i>
 					</button>
