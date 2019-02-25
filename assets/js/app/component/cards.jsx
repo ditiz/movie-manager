@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
 
-import { BtnAddToSee, BtnAddSee } from './button';
+import { BtnAddToSee, BtnAddSee } from './button'
 
 export class CardMovie extends Component {
 	state = {

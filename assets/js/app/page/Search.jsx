@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { CardMovie } from '../component/cards'
+import SoftCards from '../component/softCards'
 
 class Search extends Component {
 
@@ -27,7 +27,7 @@ class Search extends Component {
 	render() {
 		if (this.state.ready) {
 			return (
-				<Render movies={this.state.movies} />
+				<Render movies={this.state.movies} {...this.props}/>
 			)
 		} else {
 			return (
@@ -40,17 +40,15 @@ class Search extends Component {
 }
 
 const Render = ({movies, ...props}) => {
-	console.log(movies)
 	return movies.map(mov => {
-		console.log(mov)
 		let movie = {
 			title: mov.Title,
 			year: mov.Year,
 			poster: mov.Poster,
 			imdbId: mov.imdbID
 		}
-		
-		return <CardMovie movie={movie}/>
+
+		return <SoftCards movie={movie} key={movie.imdbId} {...props}/>
 	})
 }
 
