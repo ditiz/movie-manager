@@ -7,8 +7,7 @@ function SoftCards({ movie, ...props }) {
 	const [imgReady, setImgReady] = React.useState(false)
 
 	const redirectToMovie = () => {
-		console.log("pouet")
-		// props.history.push('/app/movie/' + movie.imdbId)
+		props.history.push('/app/movie/' + movie.imdbId)
 	}
 
 	return (
@@ -37,7 +36,7 @@ function SoftCards({ movie, ...props }) {
 
 
 const Card = styled.div`
-	width: 20rem;
+	width: 19rem;
 	background: #212121;
 	color: #FFF;
 	display: flex;
