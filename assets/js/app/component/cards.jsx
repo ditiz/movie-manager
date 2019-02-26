@@ -43,6 +43,26 @@ const WaitImg = (props) => {
 			));
 		}
 
+		const clickAddToSee = () => {
+			let url = `/api/movies/toSee/${props.movie.imdbId}/add`
+
+			fetch(url)
+			.then(res => res.json())
+			.then(res => {
+				console.log(`${props.movie.imdbId} ajouter au film à voir`)
+			})
+		}
+
+		const clickAddSee = () => {
+			let url = `/api/movies/see/${props.movie.imdbId}/add`
+
+			fetch(url)
+				.then(res => res.json())
+				.then(res => {
+					console.log(`${props.movie.imdbId} ajouter au film à voir`)
+				})
+		}
+
 		return (
 			<Right>
 				<header>
@@ -68,8 +88,8 @@ const WaitImg = (props) => {
 				</CastInfo>
 
 				<Bottom>
-					<BtnAddToSee />
-					<BtnAddSee />
+					<BtnAddToSee onClick={clickAddToSee}/>
+					<BtnAddSee onClick={clickAddSee}/>
 				</Bottom>
 			</Right>
 		)
