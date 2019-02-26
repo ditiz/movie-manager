@@ -59,10 +59,11 @@ class MovieRepository extends ServiceEntityRepository
     public function findMovieToSee()
     {
         return $this->createQueryBuilder('m')
-            ->innerJoin('App\Entity\MovieToSee', 'ms', 'WITH', 'm.id = ms.movie_id')
-            ->select('m, ms')
+            ->innerJoin('App\Entity\MovieToSee', 'mts', 'WITH', 'm.id = mts.movie_id')
+            ->select('m, mts')
             ->orderBy('m.id', 'ASC')
-            ->groupBy('m.id, ms.id')
+            ->groupBy('m.id, mts.id')
+            ->where('mts.to_see = 1')
             ->getQuery()
             ->getScalarResult();
     }    
@@ -78,6 +79,7 @@ class MovieRepository extends ServiceEntityRepository
             ->select('m, ms')
             ->orderBy('m.id', 'ASC')
             ->groupBy('m.id, ms.id')
+            ->where('ms.see = 1')
             ->getQuery()
             ->getScalarResult();
     }  
