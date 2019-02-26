@@ -21,7 +21,11 @@ class Main extends React.Component {
 						<Route exact path='/app/toSee' key="toSee" component={MovieList} />
 						<Route exact path='/app/see' key="see" component={MovieList} />
 						<Route exact path='/app/movie/:imdbId' component={Movie} />
-						<Route exact path='/app/movie/search/:search' component={Search} />
+						<Route path='/app/movie/search/:search'
+							render={props => 
+								<Search key={props.match.params.search || 'search'} {...props}/>
+							}
+						/>
 					</Switch>
 				</div>
 			</Router>
