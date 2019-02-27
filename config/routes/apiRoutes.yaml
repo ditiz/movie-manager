@@ -47,3 +47,11 @@ apiSearch:
 apiSearchWithPage: 
     path: /movies/search/{search}/{page}
     controller: App\Controller\Api\MovieListController::search
+
+apiAddMovieToSee: 
+    path: /movies/toSee/{imdbID}/add
+    controller: App\Controller\Api\MovieListController::seeAgain
+
+apiAddMovieSee: 
+    path: /movies/see/{imdbID}/add
+    controller: App\Controller\Api\MovieListController::seen
