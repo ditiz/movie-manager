@@ -30,20 +30,25 @@ class MovieListController extends AbstractController
 
     public function getOneByImdbID($imdbID)
     {
-        $movies = $this->getDoctrine()
+        $movie = $this->getDoctrine()
             ->getRepository(Movie::class)
             ->findOneBy(['imdbID' => $imdbID]);
 
-        return $this->json($movies);
+        if ($movie == null) {
+            //Get the movie from imdb
+            $movie = $this->omdb->getMovieByImdbID($imdbID);
+        }
+
+        return $this->json($movie);
     }
 
     public function getOneById($id)
     {
-        $movies = $this->getDoctrine()
+        $movie = $this->getDoctrine()
             ->getRepository(Movie::class)
             ->findOne($id);
 
-        return $this->json($movies);
+        return $this->json($movie);
     }
 
     public function toSee() {
@@ -99,7 +104,6 @@ class MovieListController extends AbstractController
     }
 
     public function setSee($imdbID) {
-
         list($movie, $movie_to_see, $movie_see) = $this->getDoctrine()
             ->getRepository(Movie::class)
             ->findMovieWithWatchingInfo($imdbID);
@@ -113,7 +117,8 @@ class MovieListController extends AbstractController
         if (!$movie_see) {
             $movie_see = new MovieSee();
 
-            $movie_see->setImdbId($imdbID)
+            $movie_see
+                ->setImdbId($imdbID)
                 ->setMovieId($movie->getId());
         }
 
