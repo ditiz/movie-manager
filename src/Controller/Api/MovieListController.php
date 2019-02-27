@@ -105,20 +105,25 @@ class MovieListController extends AbstractController
 
     public function setSee($imdbID) {
         
-        list($movie, $movie_to_see, $movie_see) = $this->getDoctrine()
+        $res = $this->getDoctrine()
             ->getRepository(Movie::class)
             ->findMovieWithWatchingInfo($imdbID);
+
+        if ($res) {
+            list($movie, $movie_to_see, $movie_see) = $res;
+        }
         
-        if (!$movie) {
-            $movie = $this->omdb->getOneByImdbID($imdbID);
+        if (empty($movie) || !$movie) {
+            //we save the movie in database 
+            $movie = $this->omdb->getMovieByImdbID($imdbID);
         }
 
-        if ($movie_to_see) {
+        if (isset($movie_to_see)) {
             $movie_to_see->setToSee(0);
             $entityManager->persist($movie_to_see);
         }
         
-        if (!$movie_see) {
+        if (empty($movie_see) || !$movie_see) {
             $movie_see = new MovieSee();
 
             $movie_see

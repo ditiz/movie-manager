@@ -10,6 +10,30 @@ function SoftCards({ movie, ...props }) {
 		props.history.push('/app/movie/' + movie.imdbId)
 	}
 
+	const clickAddToSee = () => {
+		let url = `/api/movies/toSee/${movie.imdbId}/add`
+
+		fetch(url)
+			.then(res => res.json())
+			.then(res => {
+				if (res == 'false') {
+					alert('error')
+				}
+			})
+	}
+
+	const clickAddSee = () => {
+		let url = `/api/movies/see/${movie.imdbId}/add`
+
+		fetch(url)
+			.then(res => res.json())
+			.then(res => {
+				if (res == 'false') {
+					alert('error')
+				}
+			})
+	}
+
 	return (
 		<Card className="mdc-card">
 			<Poster
@@ -26,8 +50,8 @@ function SoftCards({ movie, ...props }) {
 				</header>
 
 				<Down>
-					<BtnAddToSee />
-					<BtnAddSee />
+					<BtnAddToSee onClick={clickAddToSee}/>
+					<BtnAddSee onClick={clickAddSee}/>
 				</Down>
 			</Bottom>
 		</Card>

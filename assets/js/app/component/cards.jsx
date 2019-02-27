@@ -49,18 +49,21 @@ const WaitImg = (props) => {
 			fetch(url)
 			.then(res => res.json())
 			.then(res => {
-				console.log(`${props.movie.imdbId} ajouter au film à voir`)
+				if (res == 'false') {
+					alert('error')
+				}
 			})
 		}
 
 		const clickAddSee = () => {
 			let url = `/api/movies/see/${props.movie.imdbId}/add`
-			console.log(url)
 			
 			fetch(url)
 			.then(res => res.json())
 			.then(res => {
-				console.log(`${props.movie.imdbId} ajouter au film vu`)
+				if (res == 'false') {
+					alert('error')
+				}
 			})
 		}
 
