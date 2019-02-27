@@ -17,8 +17,6 @@ class Movie extends Component {
 		let imdbId = this.props.match.params.imdbId;
 		let url = serverName + "api/movies/imdbID/" + imdbId
 
-		console.log(url)
-
 		fetch(url)
 		.then(res => res.json())
 		.then(res => {
