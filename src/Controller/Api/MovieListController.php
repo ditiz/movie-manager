@@ -142,8 +142,13 @@ class MovieListController extends AbstractController
             ->getRepository(Movie::class)
             ->findMovieWithWatchingInfo($imdbID);
 
-        if (!$movie ||!$movie_see) {
-            return $this->json(false);
+       if (!$movie) {
+            $movie = $this->omdb->getOneByImdbID($imdbID);
+        }
+
+        if ($movie_see) {
+            $movie_see->setToSee(0);
+            $entityManager->persist($movie_see);
         }
 
         $movie_see->setSee(0);
@@ -160,7 +165,6 @@ class MovieListController extends AbstractController
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($movie_to_see);
-        $entityManager->persist($movie_see);
         $entityManager->flush();
 
         return $this->json(true);
