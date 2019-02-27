@@ -77,7 +77,6 @@ const Card = styled.div`
 `
 
 const Poster = styled.img`
-	height: 100%;
 	width: 100%;
 	cursor: pointer;
 `

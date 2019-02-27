@@ -68,10 +68,18 @@ const Render = ({movies, ...props}) => {
 	})
 }
 
-const ListCards = styled.div`
-	display: flex;
-	justify-content: space-evenly;
-	flex-flow: row nowrap;
-`
+const ListCards = (props) => {
+	const style = {
+		display: "flex",
+		justifyContent: "space-around",
+		flexFlow: "row wrap"
+	}
+
+	return (
+		<div style={style}>
+			{props.children}	
+		</div>
+	)
+}
 
 export default Search
