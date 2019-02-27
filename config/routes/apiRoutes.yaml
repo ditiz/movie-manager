@@ -34,11 +34,11 @@ apiEditSeeStatus:
 
 apiSetMovieToSeeSeen:
     path: /movies/toSee/{imdbID}/seen
-    controller: App\Controller\Api\MovieListController::setSeen
+    controller: App\Controller\Api\MovieListController::setSee
 
 apiSeeAgain:
     path: /movies/see/{imdbID}/seeAgain
-    controller: App\Controller\Api\MovieListController::seeAgain
+    controller: App\Controller\Api\MovieListController::setToSee
 
 apiSearch: 
     path: /movies/search/{search}
@@ -50,8 +50,8 @@ apiSearchWithPage:
 
 apiAddMovieToSee: 
     path: /movies/toSee/{imdbID}/add
-    controller: App\Controller\Api\MovieListController::seeAgain
+    controller: App\Controller\Api\MovieListController::setToSee
 
-apiAddMovieSee: 
+apiAddMovieSee:
     path: /movies/see/{imdbID}/add
-    controller: App\Controller\Api\MovieListController::seen
+    controller: App\Controller\Api\MovieListController::setSee

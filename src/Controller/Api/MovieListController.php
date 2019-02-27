@@ -98,7 +98,7 @@ class MovieListController extends AbstractController
         return $this->json(true);
     }
 
-    public function setSeen($imdbID) {
+    public function setSee($imdbID) {
 
         list($movie, $movie_to_see, $movie_see) = $this->getDoctrine()
             ->getRepository(Movie::class)
@@ -127,7 +127,7 @@ class MovieListController extends AbstractController
         return $this->json(true);
     } 
 
-    public function seeAgain($imdbID) {
+    public function setToSee($imdbID) {
 
         list($movie, $movie_to_see, $movie_see) = $this->getDoctrine()
             ->getRepository(Movie::class)
