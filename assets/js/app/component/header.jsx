@@ -81,7 +81,7 @@ export const Search = styled.div`
 		padding: .3rem .7rem;
 		font-size: 1.3rem;
 		border-radius: 3px 0 0 3px;
-		border: 1px solid #6200ee;
+		border: 1px solid #FFF;
 		height: 100%;
 	}
 
