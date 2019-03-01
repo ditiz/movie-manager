@@ -104,6 +104,7 @@ class MovieListController extends AbstractController
     }
 
     public function setSee($imdbID) {
+        $entityManager = $this->getDoctrine()->getManager();
         
         $res = $this->getDoctrine()
             ->getRepository(Movie::class)
@@ -133,8 +134,6 @@ class MovieListController extends AbstractController
 
         $movie_see->setSee(1);
         
-        
-        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($movie_see);
         $entityManager->flush();
 
@@ -142,6 +141,7 @@ class MovieListController extends AbstractController
     } 
 
     public function setToSee($imdbID) {
+        $entityManager = $this->getDoctrine()->getManager();
 
         $res = $this->getDoctrine()
             ->getRepository(Movie::class)
@@ -152,7 +152,7 @@ class MovieListController extends AbstractController
         } 
 
        if (empty($movie) || !$movie) {
-            $movie = $this->omdb->getOneByImdbID($imdbID);
+            $movie = $this->omdb->getMovieByImdbID($imdbID);
         }
 
         if (isset($movie_see) && $movie_see) {
@@ -171,7 +171,6 @@ class MovieListController extends AbstractController
 
         $movie_to_see->setToSee(1);
 
-        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($movie_to_see);
         $entityManager->flush();
 
