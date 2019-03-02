@@ -130,9 +130,13 @@ class MovieListController extends AbstractController
             $movie_see
                 ->setImdbId($imdbID)
                 ->setMovieId($movie->getId());
+
+            $movie_see_status = 1;
+        } else {
+            $movie_see_status = !$movie_see->getSee();
         }
 
-        $movie_see->setSee(1);
+        $movie_see->setSee($movie_see_status);
         
         $entityManager->persist($movie_see);
         $entityManager->flush();
@@ -167,9 +171,13 @@ class MovieListController extends AbstractController
             $movie_to_see
                 ->setImdbId($imdbID)
                 ->setMovieId($movie->getId());
+
+            $movie_to_see_status = 1;
+        } else {
+            $movie_to_see_status = !$movie_to_see->getToSee();
         }
 
-        $movie_to_see->setToSee(1);
+        $movie_to_see->setToSee($movie_to_see_status);
 
         $entityManager->persist($movie_to_see);
         $entityManager->flush();
