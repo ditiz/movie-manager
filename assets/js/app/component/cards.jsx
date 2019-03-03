@@ -51,8 +51,11 @@ const WaitImg = (props) => {
 			.then(res => {
 				if (res == 'false') {
 					alert('error')
+				} else {
+					props.getMovies()
 				}
 			})
+
 		}
 
 		const clickAddSee = () => {
@@ -63,6 +66,8 @@ const WaitImg = (props) => {
 			.then(res => {
 				if (res == 'false') {
 					alert('error')
+				} else {
+					props.getMovies()
 				}
 			})
 		}

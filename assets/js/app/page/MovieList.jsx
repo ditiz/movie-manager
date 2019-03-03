@@ -58,6 +58,7 @@ class MovieList extends Component {
 					movies={this.state.movies}
 					error={this.state.error}
 					ready={this.state.ready}
+					getMovies={() => this.getMovies()}
 					{...this.props}
 				/>
 			</div>
@@ -68,7 +69,12 @@ class MovieList extends Component {
 
 const RenderReady = (props) => {
 	if (props.ready) {
-		return <RenderError movies={props.movies} error={props.error} {...props} />
+		return <RenderError 
+			movies={props.movies} 
+			error={props.error} 
+			getMovies={() => props.getMovies()} 
+			{...props} 
+		/>
 	} else {
 		return <Loader />
 	}
@@ -79,7 +85,12 @@ const RenderError = (props) => {
 		return <Error error={props.error} />
 	} else {
 		return props.movies.map(movie => (
-			<CardMovie key={movie.imdbId} movie={movie} {...props} />
+			<CardMovie 
+				key={movie.imdbId} 
+				movie={movie} 
+				getMovies={() => props.getMovies()} 
+				{...props}
+			/>
 		))
 	}
 }
