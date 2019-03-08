@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import { serverName } from '../server'
-import { CardMovie } from '../component/cards'
+import CardMovie from '../component/cards'
 import { Loader } from '../component/loader'
 
 class MovieList extends Component {

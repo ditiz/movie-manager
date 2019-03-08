@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
 
 import { BtnAddToSee, BtnAddSee } from './button'
 
-export class CardMovie extends Component {
+class CardMovie extends Component {
 	state = {
 		ready: false
 	}
@@ -18,6 +19,7 @@ export class CardMovie extends Component {
 	}  
 
 	render() {
+		console.log(this.props)
 		return (
 			<Card className="mdc-card">
 				<Poster 
@@ -160,3 +162,9 @@ const CastInfo = styled.div`
 	flex-flow: row nowrap;
 	justify-content: space-around;
 `
+
+CardMovie.propsTypes = {
+	movie: PropTypes.number
+}
+
+export default CardMovie
