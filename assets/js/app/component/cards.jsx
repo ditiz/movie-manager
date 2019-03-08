@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import styled from 'styled-components';
-import { Link } from "react-router-dom";
-import PropTypes from 'prop-types';
+import React, {Component} from 'react'
+import styled from 'styled-components'
+import { Link } from "react-router-dom"
+import PropTypes from 'prop-types'
 
 import { BtnAddToSee, BtnAddSee } from './button'
 
@@ -164,7 +164,7 @@ const CastInfo = styled.div`
 `
 
 CardMovie.propsTypes = {
-	movie: PropTypes.number
+	movie: PropTypes.number.isRequired
 }
 
 export default CardMovie
