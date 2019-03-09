@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 
+import LogoCamera from '../img/logo-camera.png'
+
 class NavBar extends Component {
 
 	refSearch = React.createRef()
@@ -25,7 +27,7 @@ class NavBar extends Component {
 		return (
 			<Header className="develop-toolbar__row mdc-toolbar__row">
 				<Link to='/app'>
-					Logo
+					<Logo src={LogoCamera} alt="logo"/>
 				</Link>
 
 				<Link className='link' to='/app/toSee'>
@@ -110,5 +112,18 @@ const SearchIcon = (props) => {
 		</svg>
 	)
 }
+
+const Logo = styled.img`
+	height: 2rem;
+	&:hover {
+		filter: 
+			invert(87%) 
+			sepia(99%) 
+			saturate(7445%) 
+			hue-rotate(269deg) 
+			brightness(86%) 
+			contrast(123%);
+	}
+`
 
 export default withRouter(NavBar)
