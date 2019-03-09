@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 import { BtnAddToSee, BtnAddSee } from './button'
 
@@ -108,5 +109,9 @@ const Down = styled.div`
 		margin: 0;
 	}
 `
+
+SoftCards.propTypes = {
+	movie: PropTypes.object
+}
 
 export default SoftCards
