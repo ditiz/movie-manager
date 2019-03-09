@@ -19,7 +19,6 @@ class CardMovie extends Component {
 	}  
 
 	render() {
-		console.log(this.props)
 		return (
 			<Card className="mdc-card">
 				<Poster 
@@ -163,8 +162,8 @@ const CastInfo = styled.div`
 	justify-content: space-around;
 `
 
-CardMovie.propsTypes = {
-	movie: PropTypes.number.isRequired
+CardMovie.propTypes = {
+	movie: PropTypes.object
 }
 
 export default CardMovie
