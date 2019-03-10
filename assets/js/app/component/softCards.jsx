@@ -114,4 +114,13 @@ SoftCards.propTypes = {
 	movie: PropTypes.object
 }
 
+SoftCards.defaultProps = {
+	movie: {
+		poster: '',
+		title: '',
+		year: 0,
+		imdbId: 'notFound',
+	}
+}
+
 export default SoftCards
