@@ -166,4 +166,16 @@ CardMovie.propTypes = {
 	movie: PropTypes.object
 }
 
+CardMovie.defaultProps = {
+	movie : {
+		poster: '',
+		title: '',
+		plot: '',
+		year: 0,
+		imdbId: 'notFound',
+		actors: [],
+		director: ''
+	}
+}
+
 export default CardMovie
