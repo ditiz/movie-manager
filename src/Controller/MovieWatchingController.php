@@ -16,21 +16,20 @@ class MovieWatchingController extends AbstractController
 	private $twig;
     private $omdb;
 
-    public function __construct(Environment $twig, ManageOmdbApi $omdb) {
+    public function __construct(Environment $twig, ManageOmdbApi $omdb) 
+    {
         $this->twig = $twig;
         $this->omdb = $omdb;
     }
 
-    public function getWatchInfoArray($movies) {
+    public function getWatchInfoArray($movies) 
+    {
         $watch_infos = [];
         foreach ($movies as $movie) {
-            $watch_infos['toSee'][$movie['imdbID']] = $this->getDoctrine()
-                ->getRepository(MovieToSee::class)
-                ->findOneBy(['imdbID' => $movie['imdbID'], 'to_see' => 1]);
+            list($to_see_info, $see_info)= $this->getWatchingInfoByImdbId($movie['imdbID']);
 
-            $watch_infos['see'][$movie['imdbID']] = $this->getDoctrine()
-                ->getRepository(MovieSee::class)
-                ->findOneBy(['imdbID' => $movie['imdbID'], 'see' => 1]);
+            $watch_infos['toSee'][$movie['imdbID']] =  $to_see_info;
+            $watch_infos['see'][$movie['imdbID']] = $see_info;
         }
 
         if ($watch_infos == []) {
@@ -40,16 +39,14 @@ class MovieWatchingController extends AbstractController
         return $watch_infos;
     }
 
-    public function getWatchInfoObject($movies) {
+    public function getWatchInfoObject($movies) 
+    {
         $watch_infos = [];
         foreach ($movies as $movie) {
-            $watch_infos['toSee'][$movie->getimdbID()] = $this->getDoctrine()
-                ->getRepository(MovieToSee::class)
-                ->findOneBy(['imdbID' =>$movie->getimdbID(), 'to_see' => 1]);
+            list($to_see_info, $see_info)= $this->getWatchingInfoByImdbId($movie->getimdbID());
 
-            $watch_infos['see'][$movie->getimdbID()] = $this->getDoctrine()
-                ->getRepository(MovieSee::class)
-                ->findOneBy(['imdbID' => $movie->getimdbID(), 'see' => 1]);
+            $watch_infos['toSee'][$movie->getimdbID()] =  $to_see_info;
+            $watch_infos['see'][$movie->getimdbID()] = $see_info;
         }
 
         if ($watch_infos == []) {
@@ -58,6 +55,19 @@ class MovieWatchingController extends AbstractController
 
         return $watch_infos;
     }
+
+    public function getWatchingInfoByImdbId($imdbID)
+    {
+        $to_see = $this->getDoctrine()
+            ->getRepository(MovieToSee::class)
+            ->findOneBy(['imdbID' => $imdbID, 'to_see' => 1]);
+
+        $see = $this->getDoctrine()
+            ->getRepository(MovieSee::class)
+            ->findOneBy(['imdbID' => $imdbID, 'see' => 1]);
+
+        return [$to_see, $see];
+    } 
 
 	public function updateMovieToSeeFromSearch(Request $request) 
     {
