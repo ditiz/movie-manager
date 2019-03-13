@@ -51,7 +51,8 @@ class MovieListController extends AbstractController
         return $this->json($movie);
     }
 
-    public function toSee() {
+    public function toSee() 
+    {
         $movies = $this->getDoctrine()
             ->getRepository(Movie::class)
             ->findMovieToSee();
@@ -59,7 +60,8 @@ class MovieListController extends AbstractController
         return $this->json($movies);
     }
 
-    public function see() {
+    public function see() 
+    {
         $movies = $this->getDoctrine()
             ->getRepository(Movie::class)
             ->findMovieSee();
@@ -67,7 +69,8 @@ class MovieListController extends AbstractController
         return $this->json($movies);
     }
 
-    public function lastToSeeAndSee() {
+    public function lastToSeeAndSee() 
+    {
         $movies = $this->getDoctrine()
             ->getRepository(Movie::class)
             ->findLastMovieToSeeAndSee();
@@ -75,7 +78,8 @@ class MovieListController extends AbstractController
         return $this->json($movies);
     }
 
-    public function editToSeeStatus($imdbID) {
+    public function editToSeeStatus($imdbID) 
+    {
         $movie = $this->getDoctrine()
             ->getRepository(Movie::class)
             ->findOneBy(['imdbID' => $imdbID]);
@@ -89,7 +93,8 @@ class MovieListController extends AbstractController
         return $this->json(true);
     }
 
-    public function editSeeStatus($imdbID) {
+    public function editSeeStatus($imdbID) 
+    {
         $movie = $this->getDoctrine()
             ->getRepository(Movie::class)
             ->findOneBy(['imdbID' => $imdbID]);
@@ -103,7 +108,8 @@ class MovieListController extends AbstractController
         return $this->json(true);
     }
 
-    public function setSee($imdbID) {
+    public function setSee($imdbID) 
+    {
         $entityManager = $this->getDoctrine()->getManager();
         
         $res = $this->getDoctrine()
@@ -144,7 +150,8 @@ class MovieListController extends AbstractController
         return $this->json(true);
     } 
 
-    public function setToSee($imdbID) {
+    public function setToSee($imdbID) 
+    {
         $entityManager = $this->getDoctrine()->getManager();
 
         $res = $this->getDoctrine()
@@ -190,5 +197,20 @@ class MovieListController extends AbstractController
         $movies = $this->omdb->searchMovie($search, $page);
 
         return $this->json($movies);
+    }
+
+    public function watchingInfo($imdbId) 
+    {
+        $watchingInfo = $this->watching->getWatchingInfoByImdbId($imdbId);
+ 
+        if ($watchingInfo['to_see']) {
+            $watchingInfo['to_see'] = $watchingInfo['to_see']->getToSee();
+        }
+
+        if ($watchingInfo['see']) {
+            $watchingInfo['see'] = $watchingInfo['see']->getSee();
+        }
+        
+        return $this->json($watchingInfo);
     }
 }
