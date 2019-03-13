@@ -7,7 +7,11 @@ import { BtnAddToSee, BtnAddSee } from './button'
 
 class CardMovie extends Component {
 	state = {
-		ready: false
+		ready: false,
+		watching: {
+			to_see: null, 
+			see: null
+		}
 	}
 
 	imgLoad = () => {
@@ -16,7 +20,19 @@ class CardMovie extends Component {
 
 	redirectToMovie = () => {
 		this.props.history.push('/app/movie/' + this.props.movie.imdbId)
-	}  
+	} 
+
+	getMovies = () => {
+		let url = '/api/movie/watching/' + this.props.movie.imdbId
+
+		fetch(url)
+			.then(res => res.json())
+			.then(res => this.setState({ watching: res }))
+	}
+
+	componentDidMount() {
+		this.getMovies()
+	}
 
 	render() {
 		return (
@@ -28,7 +44,12 @@ class CardMovie extends Component {
 					onClick={this.redirectToMovie}
 				/>
 
-				<WaitImg imgReady={this.state.ready} {...this.props} />
+				<WaitImg 
+					imgReady={this.state.ready} 
+					watching={this.state.watching} 
+					getMovies={() => this.getMovies()}
+					{...this.props} 
+				/>
 			</Card>
 		);
 	}
@@ -67,7 +88,7 @@ const WaitImg = (props) => {
 			.then(res => {
 				if (res == 'false') {
 					alert('error')
-				} else {
+				} else if(props.getMovies){
 					props.getMovies()
 				}
 			})
@@ -98,8 +119,16 @@ const WaitImg = (props) => {
 				</CastInfo>
 
 				<Bottom>
-					<BtnAddToSee onClick={clickAddToSee}/>
-					<BtnAddSee onClick={clickAddSee}/>
+					<BtnAddToSee
+						toSee={props.watching.to_see} 
+						onClick={clickAddToSee}
+						getMovies={() => props.getMovies()}
+					/>
+					<BtnAddSee 
+						see={props.watching.see} 
+						onClick={clickAddSee}
+						getMovies={() => props.getMovies()}
+					/>
 				</Bottom>
 			</Right>
 		)
