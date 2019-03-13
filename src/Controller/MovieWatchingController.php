@@ -26,7 +26,8 @@ class MovieWatchingController extends AbstractController
     {
         $watch_infos = [];
         foreach ($movies as $movie) {
-            list($to_see_info, $see_info)= $this->getWatchingInfoByImdbId($movie['imdbID']);
+            $watching = $this->getWatchingInfoByImdbId($movie['imdbID']);
+            list($to_see_info, $see_info) = array_values($watching);
 
             $watch_infos['toSee'][$movie['imdbID']] =  $to_see_info;
             $watch_infos['see'][$movie['imdbID']] = $see_info;
@@ -43,7 +44,9 @@ class MovieWatchingController extends AbstractController
     {
         $watch_infos = [];
         foreach ($movies as $movie) {
-            list($to_see_info, $see_info)= $this->getWatchingInfoByImdbId($movie->getimdbID());
+            $watching = $this->getWatchingInfoByImdbId($movie->getimdbID());
+            list($to_see_info, $see_info) = array_values($watching);
+
 
             $watch_infos['toSee'][$movie->getimdbID()] =  $to_see_info;
             $watch_infos['see'][$movie->getimdbID()] = $see_info;
@@ -66,7 +69,10 @@ class MovieWatchingController extends AbstractController
             ->getRepository(MovieSee::class)
             ->findOneBy(['imdbID' => $imdbID, 'see' => 1]);
 
-        return [$to_see, $see];
+        return [
+            'to_see' => $to_see, 
+            'see' => $see
+        ];
     } 
 
 	public function updateMovieToSeeFromSearch(Request $request) 
