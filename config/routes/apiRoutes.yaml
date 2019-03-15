@@ -57,5 +57,11 @@ apiAddMovieSee:
     controller: App\Controller\Api\MovieListController::setSee
 
 apiGetWatchingInfo:
-    path: /movie/watching/{imdbId}
+    path: /movies/watching/{imdbID}
     controller: App\Controller\Api\MovieListController::watchingInfo
+    methods: [GET]
+
+apiGetWatchingInfoFromImdbIdList:
+    path: /movies/list/watching
+    controller: App\Controller\Api\MovieListController::watchingInfoFromList
+    methods: [POST]

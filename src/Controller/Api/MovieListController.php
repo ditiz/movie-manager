@@ -199,9 +199,9 @@ class MovieListController extends AbstractController
         return $this->json($movies);
     }
 
-    public function watchingInfo($imdbId) 
+    public function watchingInfo($imdbID) 
     {
-        $watchingInfo = $this->watching->getWatchingInfoByImdbId($imdbId);
+        $watchingInfo = $this->watching->getWatchingInfoByImdbId($imdbID);
  
         if ($watchingInfo['to_see']) {
             $watchingInfo['to_see'] = $watchingInfo['to_see']->getToSee();
@@ -212,5 +212,23 @@ class MovieListController extends AbstractController
         }
         
         return $this->json($watchingInfo);
+    }
+
+    public function watchingInfoFromList(Request $request) 
+    {
+        $imdbIDs = $request->get('imdbIDs');
+
+        $watchingInfos = $this->getDoctrine()
+            ->getRepository(Movie::class)
+            ->findMovieWithWatchingByImdbIDs($imdbIDs);
+        
+        foreach ($watchingInfos as $watchingInfo) {
+            $response[$watchingInfo['m_imdbID']] = [
+                'to_see' => $watchingInfo['mts_to_see'],
+                'see' => $watchingInfo['ms_see']
+            ];
+        }
+            
+        return $this->json($response);
     }
 }
