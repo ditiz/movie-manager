@@ -51,8 +51,8 @@ function SoftCards({ movie, ...props }) {
 				</header>
 
 				<Down>
-					<BtnAddToSee onClick={clickAddToSee}/>
-					<BtnAddSee onClick={clickAddSee}/>
+					<BtnAddToSee toSee={movie.toSee} onClick={clickAddToSee}/>
+					<BtnAddSee see={movie.see} onClick={clickAddSee}/>
 				</Down>
 			</Bottom>
 		</Card>

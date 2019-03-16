@@ -61,7 +61,9 @@ const Render = ({movies, ...props}) => {
 			title: mov.Title,
 			year: mov.Year,
 			poster: mov.Poster,
-			imdbId: mov.imdbID
+			imdbId: mov.imdbID,
+			toSee: mov.to_see,
+			see: mov.see
 		}
 
 		return <SoftCards movie={movie} key={movie.imdbId + Math.random()} {...props}/>

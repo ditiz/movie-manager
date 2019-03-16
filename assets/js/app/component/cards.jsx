@@ -23,7 +23,7 @@ class CardMovie extends Component {
 	} 
 
 	getMovies = () => {
-		let url = '/api/movie/watching/' + this.props.movie.imdbId
+		let url = '/api/movies/watching/' + this.props.movie.imdbId
 
 		fetch(url)
 			.then(res => res.json())
