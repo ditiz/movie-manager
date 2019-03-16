@@ -196,6 +196,8 @@ class MovieListController extends AbstractController
     {
         $movies = $this->omdb->searchMovie($search, $page);
 
+        $movies['Search'] = $this->addWatchingInfoToMovies($movies['Search']);
+
         return $this->json($movies);
     }
 
@@ -214,21 +216,28 @@ class MovieListController extends AbstractController
         return $this->json($watchingInfo);
     }
 
-    public function watchingInfoFromList(Request $request) 
+    public function addWatchingInfoToMovies(Array $movies) 
     {
-        $imdbIDs = $request->get('imdbIDs');
+        $imdbIDs = [];
+        
+        foreach ($movies as $movie) {
+            $imdbIDs[] = $movie['imdbID'];
+        } 
 
         $watchingInfos = $this->getDoctrine()
             ->getRepository(Movie::class)
-            ->findMovieWithWatchingByImdbIDs($imdbIDs);
-        
-        foreach ($watchingInfos as $watchingInfo) {
-            $response[$watchingInfo['m_imdbID']] = [
-                'to_see' => $watchingInfo['mts_to_see'],
-                'see' => $watchingInfo['ms_see']
-            ];
+            ->findMovieWithWatchingByImdbIDs($imdbIDs);        
+
+        foreach ($movies as $index => $movie) {
+            foreach ($watchingInfos as $watchingInfo) {
+                if ($movie['imdbID'] == $watchingInfo['m_imdbID']) {
+                    $movie['to_see'] = $watchingInfo['mts_to_see'];
+                    $movie['see'] = $watchingInfo['ms_see'];
+                }
+            }
+            $movies[$index] = $movie;
         }
-            
-        return $this->json($response);
+
+        return $movies;
     }
 }
