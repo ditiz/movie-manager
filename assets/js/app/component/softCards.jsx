@@ -45,7 +45,7 @@ function SoftCards({ movie, ...props }) {
 			/>
 
 			<Bottom>
-				<header>
+				<header onClick={redirectToMovie} style={{cursor:'pointer'}}>
 					<h2>{movie.title}</h2>
 					<small>{movie.year}</small>
 				</header>
