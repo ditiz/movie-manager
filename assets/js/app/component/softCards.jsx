@@ -13,24 +13,23 @@ function SoftCards({ movie, ...props }) {
 
 	const clickAddToSee = () => {
 		let url = `/api/movies/toSee/${movie.imdbId}/add`
-
-		fetch(url)
-			.then(res => res.json())
-			.then(res => {
-				if (res == 'false') {
-					alert('error')
-				}
-			})
+		api(url)
 	}
 
 	const clickAddSee = () => {
 		let url = `/api/movies/see/${movie.imdbId}/add`
+		api(url)
+	}
 
+	const api = (url) => {
 		fetch(url)
 			.then(res => res.json())
 			.then(res => {
 				if (res == 'false') {
 					alert('error')
+				} else {
+					movie.toSee = res
+					movie.see = res
 				}
 			})
 	}
