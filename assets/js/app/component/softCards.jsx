@@ -6,30 +6,40 @@ import { BtnAddToSee, BtnAddSee } from './button'
 
 function SoftCards({ movie, ...props }) {
 	const [imgReady, setImgReady] = React.useState(false)
+	const [toSee, setToSee] = React.useState(movie.toSee)
+	const [see, setSee] = React.useState(movie.see)
 
 	const redirectToMovie = () => {
 		props.history.push('/app/movie/' + movie.imdbId)
 	}
 
 	const clickAddToSee = () => {
-		let url = `/api/movies/toSee/${movie.imdbId}/add`
-		api(url)
+		let url = `/api/movies/toSee/${movie.imdbId}/add`,
+			watching = {
+				toSee: true,
+				see: false
+			}
+		api(url, watching)
 	}
 
 	const clickAddSee = () => {
-		let url = `/api/movies/see/${movie.imdbId}/add`
-		api(url)
+		let url = `/api/movies/see/${movie.imdbId}/add`,
+			watching = {
+				toSee: false,
+				see: true
+			}
+		api(url, watching)
 	}
 
-	const api = (url) => {
+	const api = (url, watching) => {
 		fetch(url)
 			.then(res => res.json())
 			.then(res => {
 				if (res == 'false') {
 					alert('error')
 				} else {
-					movie.toSee = res
-					movie.see = res
+					setToSee(watching.toSee)
+					setSee(watching.see)
 				}
 			})
 	}
@@ -50,8 +60,8 @@ function SoftCards({ movie, ...props }) {
 				</header>
 
 				<Down>
-					<BtnAddToSee toSee={movie.toSee} onClick={clickAddToSee}/>
-					<BtnAddSee see={movie.see} onClick={clickAddSee}/>
+					<BtnAddToSee toSee={toSee} onClick={clickAddToSee}/>
+					<BtnAddSee see={see} onClick={clickAddSee}/>
 				</Down>
 			</Bottom>
 		</Card>
