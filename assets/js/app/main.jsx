@@ -8,7 +8,8 @@ import Movie from './page/Movie'
 import Home from './page/Home'
 import MovieList from './page/MovieList'
 import Search from './page/Search'
- 
+import Expore from './page/Explore'
+
 class Main extends React.Component {
 	render() {
 		return (
@@ -26,6 +27,7 @@ class Main extends React.Component {
 								<Search key={props.match.params.search || 'search'} {...props}/>
 							}
 						/>
+						<Route path='/app/explore' component={Expore} />
 					</Switch>
 				</div>
 			</Router>

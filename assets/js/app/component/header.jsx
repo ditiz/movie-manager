@@ -37,6 +37,10 @@ class NavBar extends Component {
 					Film vu
 				</Link>
 
+				<Link className='link' to='/app/explore'>
+					Explorer
+				</Link>
+
 				<Search>
 					<input type="text" ref={this.refSearch} onKeyDown={this.handleKeySearch}/>
 					<button className='mdc-button mdc-button--raised' onClick={this.search}>
