@@ -10,12 +10,18 @@ use App\Entity\MovieSee;
 use App\Entity\MovieToSee;
 use App\Controller\ManageOmdbApi;
 use App\Controller\MovieWatchingController;
+use App\Controller\ManageTmdbApiController;
 
 class MovieListController extends AbstractController
 {
-    public function __construct(ManageOmdbApi $omdb, MovieWatchingController $watching) {
+    public function __construct(
+        ManageOmdbApi $omdb, 
+        MovieWatchingController $watching,
+        ManageTmdbApiController $tmdb
+    ) {
         $this->omdb = $omdb;
         $this->watching = $watching;
+        $this->tmdb = $tmdb;
     }
 
 
@@ -240,4 +246,9 @@ class MovieListController extends AbstractController
 
         return $movies;
     }
+
+    public function discoverMovies() {
+        $movies = $this->tmdb->discoverMovies();
+        return new Response(json_encode($movies));
+    } 
 }

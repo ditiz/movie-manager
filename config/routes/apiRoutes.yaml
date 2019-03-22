@@ -65,3 +65,7 @@ apiGetWatchingInfoFromImdbIdList:
     path: /movies/list/watching
     controller: App\Controller\Api\MovieListController::watchingInfoFromList
     methods: [POST]
+
+apiDiscoverMovies:
+    path: /discover/movies
+    controller: App\Controller\Api\MovieListController::discoverMovies
