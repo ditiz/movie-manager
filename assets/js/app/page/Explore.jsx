@@ -1,29 +1,80 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 
-const Explore = React.memo(function Explore() {
+import SoftCards from '../component/softCards'
+import { Loader } from '../component/loader'
 
-	const [ready, setReady] = React.useState(false)
-	const [movies, setMovies] = React.useState([])
+class Explore extends PureComponent {
 
-	const useApi = () => {
-		//url temporaire
-		const url = '/api/movies/search/scrubs'
-
-		fetch(url)
-		.then(res => res.json)
-		.then(res => {
-			setMovies(res)
-			setReady(true)
-		}).catch(err => alert(err.reason))
+	state = {
+		ready: false,
+		movies: [],
 	}
 
+	componentDidMount() {
+		this.useApi()
+	}
+
+	useApi = () => {
+		const url = '/api/discover/movies'
+
+		fetch(url)
+		.then(res => res.json())
+		.then(res => {
+			this.setState({
+				ready: true,
+				movies: res
+			})
+		})
+	}
+
+	pouet = ()  => console.log(this.state.movies)
+
+	render() {
+		if (this.state.ready) {
+			return (
+				<ListCards onClick={this.pouet}>
+					<Movies movies={this.state.movies}/> 
+				</ListCards>
+			)
+		} else {
+			return (
+				<div>
+					<Loader/>
+				</div>
+			)
+		}
+	}
+}
+
+const Movies = ({movies, ...props}) => {
+	let urlImg = 'https://image.tmdb.org/t/p/w300_and_h450_bestv2/'
+	return movies.map(mov => {
+		let movie = {
+			title: mov.title,
+			year: mov.release_date,
+			poster: urlImg + mov.poster_path,
+			imdbId: mov.imdbID,
+			toSee: mov.to_see,
+			see: mov.see
+		}
+
+		return <SoftCards key={mov.id} movie={movie} />
+	})
+}
+
+const ListCards = (props) => {
+	const style = {
+		display: "flex",
+		justifyContent: "space-around",
+		flexFlow: "row wrap"
+	}
 
 	return (
-		<div onLoad={useApi()}>
-			Explore
+		<div style={style}>
+			{props.children}
 		</div>
 	)
-})
+}
 
 export default Explore
