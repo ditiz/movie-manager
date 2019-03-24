@@ -64,7 +64,7 @@ class ManageOmdbApi extends AbstractController
             'i' => $imdb_id
         ];
 
-       $result = useApi($params);
+       $result = $this->useApi($params);
 
         return json_decode($result, true);
     }
@@ -77,7 +77,7 @@ class ManageOmdbApi extends AbstractController
             'y' => $year,
         ];
 
-        $result = useApi($params);
+        $result = $this->useApi($params);
 
         return json_decode($result, true);
     }

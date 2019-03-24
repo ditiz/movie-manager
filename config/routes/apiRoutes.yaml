@@ -69,3 +69,7 @@ apiGetWatchingInfoFromImdbIdList:
 apiDiscoverMovies:
     path: /discover/movies
     controller: App\Controller\Api\MovieListController::discoverMovies
+
+apiGetMovieByTitle: 
+    path: /movies/title/{title}/{year}
+    controller: App\Controller\Api\MovieListController::getOneByTitle

@@ -48,12 +48,18 @@ class MovieListController extends AbstractController
         return $this->json($movie);
     }
 
-    public function getOneById($id)
+    public function getOneById ($id)
     {
         $movie = $this->getDoctrine()
             ->getRepository(Movie::class)
             ->findOne($id);
 
+        return $this->json($movie);
+    }
+
+    public function getOneByTitle ($title, $year) 
+    {
+        $movie = $this->omdb->getMovieByTitle($title, $year);
         return $this->json($movie);
     }
 
@@ -250,5 +256,5 @@ class MovieListController extends AbstractController
     public function discoverMovies() {
         $movies = $this->tmdb->discoverMovies();
         return new Response(json_encode($movies));
-    } 
+    }
 }
