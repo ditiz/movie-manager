@@ -7,6 +7,10 @@ use App\Entity\Movie;
 
 class ManageOmdbApi extends AbstractController
 {
+
+    private $apikey = '92ff3a7a';
+    private $hostapi = 'http://www.omdbapi.com/';
+
     public function getMovieByImdbID($imdbID)
     {
         $data_movie = $this->getMovie($imdbID);
@@ -56,24 +60,45 @@ class ManageOmdbApi extends AbstractController
     private function getMovie($imdb_id)
     {
         $params = [
-            'apikey' => '92ff3a7a',
+            'apikey' => $this->apikey,
             'i' => $imdb_id
         ];
 
-        $params = '?' . http_build_query($params);
+       $result = useApi($params);
+
+        return json_decode($result, true);
+    }
+
+    public function getMovieByTitle (string $title, int $year) 
+    {
+        $params = [
+            'apikey' => $this->apikey,
+            't' => $title,
+            'y' => $year,
+        ];
+
+        $result = useApi($params);
+
+        return json_decode($result, true);
+    }
+
+    public function useApi (array $params) 
+    {
+        $params = http_build_query($params);
+        $url = $this->hostapi . '?' . $params;
 
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => 'http://www.omdbapi.com/' . $params
+            CURLOPT_URL => $url
         ));
 
         $result = curl_exec($curl);
 
         curl_close($curl);
 
-        return json_decode($result, true);
+        return $result;
     }
 
     public function getMovieFromDatabase(string $imdbID)
