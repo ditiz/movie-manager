@@ -21,6 +21,7 @@ class Explore extends PureComponent {
 		fetch(url)
 		.then(res => res.json())
 		.then(res => {
+			console.log(res)
 			this.setState({
 				ready: true,
 				movies: res
@@ -34,7 +35,7 @@ class Explore extends PureComponent {
 		if (this.state.ready) {
 			return (
 				<ListCards onClick={this.pouet}>
-					<Movies movies={this.state.movies}/> 
+					<Movies movies={this.state.movies} {...this.props}/> 
 				</ListCards>
 			)
 		} else {
@@ -52,14 +53,14 @@ const Movies = ({movies, ...props}) => {
 	return movies.map(mov => {
 		let movie = {
 			title: mov.title,
-			year: mov.release_date,
+			year: mov.release_date.slice(0,4),
 			poster: urlImg + mov.poster_path,
 			imdbId: mov.imdbID,
 			toSee: mov.to_see,
 			see: mov.see
 		}
 
-		return <SoftCards key={mov.id} movie={movie} />
+		return <SoftCards key={mov.id} movie={movie} {...props}/>
 	})
 }
 

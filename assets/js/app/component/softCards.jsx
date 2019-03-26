@@ -10,7 +10,19 @@ function SoftCards({ movie, ...props }) {
 	const [see, setSee] = React.useState(movie.see)
 
 	const redirectToMovie = () => {
-		props.history.push('/app/movie/' + movie.imdbId)
+		if (movie.imdbId) {
+			props.history.push('/app/movie/' + movie.imdbId)
+		} else {
+			getImdbId(movie.title, movie.year)
+		}
+	}
+
+	const getImdbId = (title, year) => {
+		let url = `/api/movies/title/${title}/${year}`
+
+		return fetch(url)
+		.then(res => res.json())
+		.then(mov => props.history.push(`/app/movie/${mov.imdbID}`))
 	}
 
 	const clickAddToSee = () => {
