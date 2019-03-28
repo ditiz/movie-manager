@@ -21,7 +21,6 @@ class Explore extends PureComponent {
 		fetch(url)
 		.then(res => res.json())
 		.then(res => {
-			console.log(res)
 			this.setState({
 				ready: true,
 				movies: res
@@ -29,12 +28,10 @@ class Explore extends PureComponent {
 		})
 	}
 
-	pouet = ()  => console.log(this.state.movies)
-
 	render() {
 		if (this.state.ready) {
 			return (
-				<ListCards onClick={this.pouet}>
+				<ListCards>
 					<Movies movies={this.state.movies} {...this.props}/> 
 				</ListCards>
 			)

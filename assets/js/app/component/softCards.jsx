@@ -22,7 +22,13 @@ function SoftCards({ movie, ...props }) {
 
 		return fetch(url)
 		.then(res => res.json())
-		.then(mov => props.history.push(`/app/movie/${mov.imdbID}`))
+		.then(mov => {
+			if (mov.imdbID) {
+				props.history.push(`/app/movie/${mov.imdbID}`)
+			} else {
+				alert('film non trouvé')
+			}
+		})
 	}
 
 	const clickAddToSee = () => {

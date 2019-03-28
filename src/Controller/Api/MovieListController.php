@@ -208,7 +208,11 @@ class MovieListController extends AbstractController
     {
         $movies = $this->omdb->searchMovie($search, $page);
 
-        $movies['Search'] = $this->addWatchingInfoToMovies($movies['Search']);
+        if (isset($movies['Search'])) {
+            $movies['Search'] = $this->addWatchingInfoToMovies($movies['Search']);
+        } else {
+            dump($movies);die;
+        }
 
         return $this->json($movies);
     }
