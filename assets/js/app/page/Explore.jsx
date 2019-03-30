@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import styled from 'styled-components'
 
 import ExploreCards from '../component/exploreCards'
 import { Loader } from '../component/loader'
@@ -32,7 +31,6 @@ class Explore extends PureComponent {
 		if (this.state.ready) {
 			return (
 				<div>
-					<Info>Cliquer sur un film lance une recherche</Info>
 					<ListCards>
 						<Movies movies={this.state.movies} {...this.props} />
 					</ListCards>
@@ -74,14 +72,5 @@ const ListCards = (props) => {
 		</div>
 	)
 }
-
-const Info = styled.div`
-	background: #000;
-	color: #FFF;
-	width: 30rem;
-	margin: .5rem auto;
-	text-align: center;
-	padding: .5rem 0;
-`
 
 export default Explore
