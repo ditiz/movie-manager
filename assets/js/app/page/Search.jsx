@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import styled from 'styled-components';
 
 import SoftCards from '../component/softCards'
 import { Loader } from '../component/loader'
@@ -8,7 +9,8 @@ class Search extends PureComponent {
 	state = {
 		movies: [],
 		ready: false,
-		search: ''
+		search: '',
+		error: '',
 	}
 
 
@@ -33,6 +35,10 @@ class Search extends PureComponent {
 					movies: res.Search,
 					ready: true
 				})
+			} else {
+				this.setState({
+					error: res.Error
+				})
 			}
 		})
 	}
@@ -43,6 +49,12 @@ class Search extends PureComponent {
 				<ListCards>
 					<Render movies={this.state.movies} {...this.props} />
 				</ListCards>
+			)
+		} else if (this.state.error) {
+			return (
+				<Error>
+					{this.state.error}
+				</Error>
 			)
 		} else {
 			return (
@@ -82,5 +94,14 @@ const ListCards = (props) => {
 		</div>
 	)
 }
+
+const Error = styled.h2`
+	margin: 1rem auto;
+	padding: .7rem 0;
+	width: 20rem;
+	color: #FFF;
+	background: #000;
+	text-align: center;
+`
 
 export default Search

@@ -210,8 +210,6 @@ class MovieListController extends AbstractController
 
         if (isset($movies['Search'])) {
             $movies['Search'] = $this->addWatchingInfoToMovies($movies['Search']);
-        } else {
-            dump($movies);die;
         }
 
         return $this->json($movies);
