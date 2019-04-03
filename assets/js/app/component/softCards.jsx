@@ -17,7 +17,7 @@ function SoftCards({ movie, ...props }) {
 	}
 
 	const clickAddToSee = () => {
-		let url = `/api/movies/toSee/${movie.imdbId}/add`,
+		let url = `/api/movies/toSee/${movie.imdbId.trim()}/add`,
 			watching = {
 				toSee: true,
 				see: false
@@ -26,11 +26,12 @@ function SoftCards({ movie, ...props }) {
 	}
 
 	const clickAddSee = () => {
-		let url = `/api/movies/see/${movie.imdbId}/add`,
-			watching = {
-				toSee: false,
-				see: true
-			}
+		let url = `/api/movies/see/${movie.imdbId.trim()}/add`,
+		watching = {
+			toSee: false,
+			see: true
+		}
+		console.log(url)
 		api(url, watching)
 	}
 
@@ -38,11 +39,12 @@ function SoftCards({ movie, ...props }) {
 		fetch(url)
 			.then(res => res.json())
 			.then(res => {
-				if (res == 'false') {
-					alert('error')
-				} else {
+				console.log(res)
+				if (res) {
 					setToSee(watching.toSee)
 					setSee(watching.see)
+				} else {
+					alert('error')
 				}
 			})
 	}

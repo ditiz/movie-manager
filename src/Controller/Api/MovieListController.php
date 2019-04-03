@@ -174,8 +174,11 @@ class MovieListController extends AbstractController
             list($movie, $movie_to_see, $movie_see) = $res;
         } 
 
-       if (empty($movie) || !$movie) {
+        if (empty($movie) || !$movie) {
             $movie = $this->omdb->getMovieByImdbID($imdbID);
+            if (!$movie) {
+                return $this->json(false);
+            }
         }
 
         if (isset($movie_see) && $movie_see) {

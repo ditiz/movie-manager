@@ -15,46 +15,50 @@ class ManageOmdbApi extends AbstractController
     {
         $data_movie = $this->getMovie($imdbID);
 
-        $movie = new Movie();
+        if (!isset($data_movie['Error'])) {
+            $movie = new Movie();
 
-        $movie->setName($data_movie['Title']);
-        $movie->setYear(intval($data_movie['Year']));
-        $movie->setRated($data_movie['Rated']);
-        $movie->setReleased($data_movie['Released']);
-        $movie->setRuntime($data_movie['Runtime']);
-        $movie->setGenre($data_movie['Genre']);
-        $movie->setDirector($data_movie['Director']);
-        $movie->setWriter($data_movie['Writer']);
-        $movie->setActors($data_movie['Actors']);
-        $movie->setPlot($data_movie['Plot']);
-        $movie->setLanguages($data_movie['Language']);
-        $movie->setCountry($data_movie['Country']);
-        $movie->setAwards($data_movie['Awards']);
-        $movie->setRating($data_movie['Ratings']);
-        $movie->setMetascore(intval($data_movie['Metascore']));
-        $movie->setImdbRating(floatval($data_movie['imdbRating']));
-        $movie->setImdbVotes(floatval($data_movie['imdbVotes']));
-        $movie->setImdbID($data_movie['imdbID']);
-        $movie->setPoster($data_movie['Poster']);
+            $movie->setName($data_movie['Title']);
+            $movie->setYear(intval($data_movie['Year']));
+            $movie->setRated($data_movie['Rated']);
+            $movie->setReleased($data_movie['Released']);
+            $movie->setRuntime($data_movie['Runtime']);
+            $movie->setGenre($data_movie['Genre']);
+            $movie->setDirector($data_movie['Director']);
+            $movie->setWriter($data_movie['Writer']);
+            $movie->setActors($data_movie['Actors']);
+            $movie->setPlot($data_movie['Plot']);
+            $movie->setLanguages($data_movie['Language']);
+            $movie->setCountry($data_movie['Country']);
+            $movie->setAwards($data_movie['Awards']);
+            $movie->setRating($data_movie['Ratings']);
+            $movie->setMetascore(intval($data_movie['Metascore']));
+            $movie->setImdbRating(floatval($data_movie['imdbRating']));
+            $movie->setImdbVotes(floatval($data_movie['imdbVotes']));
+            $movie->setImdbID($data_movie['imdbID']);
+            $movie->setPoster($data_movie['Poster']);
 
-        $boxOffice = isset($data_movie['BoxOffice']) ? $data_movie['BoxOffice'] : 'N/A';
-        $movie->setBoxoffice($boxOffice);
+            $boxOffice = isset($data_movie['BoxOffice']) ? $data_movie['BoxOffice'] : 'N/A';
+            $movie->setBoxoffice($boxOffice);
 
-        $production = isset($data_movie['Production']) ? $data_movie['Production'] : 'N/A';
-        $movie->setProduction($production);
+            $production = isset($data_movie['Production']) ? $data_movie['Production'] : 'N/A';
+            $movie->setProduction($production);
 
-        if(isset($data_movie['DVD'])) {
-            $date_DVD = date('Y-m-d H:i:s', strtotime($data_movie['DVD']));
+            if(isset($data_movie['DVD'])) {
+                $date_DVD = date('Y-m-d H:i:s', strtotime($data_movie['DVD']));
+            } else {
+                $date_DVD = date('Y-m-d H:i:s', 0);
+            }
+            $movie->setDVD($date_DVD);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($movie);
+            $entityManager->flush();
+
+            return $movie;
         } else {
-            $date_DVD = date('Y-m-d H:i:s', 0);
+            return false;
         }
-        $movie->setDVD($date_DVD);
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($movie);
-        $entityManager->flush();
-
-        return $movie;
     }
 
     private function getMovie($imdb_id)
