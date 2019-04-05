@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { withRouter } from 'react-router'
 
 import LogoCamera from '../img/logo-camera.png'
 
@@ -130,4 +129,4 @@ const Logo = styled.img`
 	}
 `
 
-export default withRouter(NavBar)
+export default NavBar
