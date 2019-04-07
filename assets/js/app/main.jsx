@@ -9,6 +9,7 @@ import Home from './page/Home'
 import MovieList from './page/MovieList'
 import Search from './page/Search'
 import Expore from './page/Explore'
+import Test from "./page/testRedux";
 
 class Main extends React.Component {
 	render() {
@@ -28,6 +29,7 @@ class Main extends React.Component {
 							}
 						/>
 						<Route path='/app/explore' component={Expore} />
+						<Route path='/app/test' component={Test}/>
 					</Switch>
 				</div>
 			</Router>
