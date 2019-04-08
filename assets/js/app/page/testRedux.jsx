@@ -93,8 +93,8 @@ function rootReducer(state = initialState, action) {
 //Store
 const store = createStore(rootReducer)
 
-window.store = store;
-window.addArticle = addArticle;
+window.store = store
+window.addArticle = addArticle
 
 
 store.dispatch(addArticle({ title: 'React Redux Tutorial for Beginners', id: 1 }))
