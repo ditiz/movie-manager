@@ -31,7 +31,6 @@ function ConnectedForm (props) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		console.log(e, title)
 		
 		const id = 3
 		props.addArticle({ title, id })

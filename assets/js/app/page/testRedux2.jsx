@@ -41,29 +41,53 @@ function rootReducer (state = initialState, action) {
 //store
 const store = createStore(rootReducer)
 
-window.store = store
-window.increment = increment
-window.decrement = decrement
-
-store.dispatch(decrement())
-
 function TestCounter(props) {
 	return (
 		<Provider store={store}>
-			pouet
+			<DisplayCounter/>
+			<DisplayInterect/>
 		</Provider>
 	)
 }
 
 //display
-function ConnectDisplay () {
-	
-}
+
+const mapStateToProps = state => {
+	return { counter: state.counter };
+};
+
+const ConnectDisplay = ({counter}) => (
+	<h1>{counter}</h1>
+)
+
+const DisplayCounter = connect(mapStateToProps)(ConnectDisplay)
 
 //edit counter value
-function ConnectInterect () {
-
+function mapDispatchToProps(dispatch) {
+	return {
+		increment: () => dispatch(increment()),
+		decrement: () => dispatch(decrement()),
+	};
 }
+
+function ConnectInterect({increment, decrement}) {
+	const actionIncrement = () => {
+		increment()
+	}
+
+	const actionDecrement = () => {
+		decrement()
+	}
+
+	return (
+		<div>
+			<button onClick={actionIncrement}>increment</button>
+			<button onClick={actionDecrement}>decrement</button>			
+		</div>
+	)
+}
+
+const DisplayInterect = connect(null, mapDispatchToProps)(ConnectInterect)
 
 
 export default TestCounter
